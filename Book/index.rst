@@ -44,7 +44,7 @@ PHP 7
     zend_engine.rst
     final.rst
 
-İndeks ve arama
+Dizin ve arama
 ================
 
 * :ref:`genindex`
