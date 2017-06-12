@@ -1,4 +1,4 @@
-Table Of Contents
+İçindekiler
 =================
 
 .. toctree::
@@ -7,14 +7,14 @@ Table Of Contents
     introduction.rst
     build_system.rst
 
-* Creating PHP extensions
+* PHP Eklentileri Oluşturmak
 
 .. toctree::
     :maxdepth: 2
 
     zvals.rst
 
-* Implementing functions
+* Fonksiyonları Uygulamak
 
 .. toctree::
     :maxdepth: 2
@@ -44,7 +44,7 @@ PHP 7
     zend_engine.rst
     final.rst
 
-Index and search
+İndeks ve arama
 ================
 
 * :ref:`genindex`
