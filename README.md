@@ -1,40 +1,50 @@
 PHP-Internals-Book
 ==================
 
-Document format: RST
+Döküman Formatı: RST
 --------------------
 
-The book is written using ReStructured Text and generated using Sphinx.
+Kitap ReStructured Text ile yazılıp Sphinx ile üretilmektedir.
 
  * RST manual: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
  * RST quickref: http://docutils.sourceforge.net/docs/user/rst/quickref.html
  * Sphinx manual: http://sphinx.pocoo.org/markup/index.html
 
-Coding style
+Kod Stili
 ------------
 
-The following "coding style" applies to the written text, not to the included code.
+Aşağıdaki kod stilleri yazı yazarken geçerlidir, kodlamalarda değil.
 
- * The maximum line-width for text is 120 characters.
- * The maximum line-width for code is 98 characters. Including the four space indentation this would be a limit of 102 characters. This is a hard limit that prevents overflows in the PDF version.
- * Indentation uses four spaces.
- * Lines should not have trailing whitespace.
- * Punctuation like `?`, `!` or `:` should directly follow after the word (e.g. `foo:` rather than `foo :`).
+ * Düz yazılar için maksimum satır 120 karakter olmalıdır.
+ * Kodlar için maksiumum satır 98 karkter olmalıdır. Girintilemeler olduğunda limit 102 karakter olabilir ancak PDF türetilirken hata çıkmaması için bu son limit.
+ * Girintileme 4 karakter boşluk olmalıdır.
+ * Satırlarda whitespace olmamalıdır.
+ * `?`, `!` veya `:` gibi noktalamalar kelimeden hemen sonra yazılmalıdır. (Örnek: `foo:` doğru kullanım, `foo :` yanlış kullanım).
 
-Domains
+Alan adları
 -------
 
-These domains have been bought by Anthony to publish info about the book:
+Aşağıdaki alan adları Anthony'e ait olup kitabın yayınlandığı orjinal(İngilizce) adreslerdir:
 
  * phpinternalsbook.com
  * phpcorebook.com
  * insidephpbook.com
 
-Only the first domain is currently in use.
+Bunlardan sadece ilk olanı aktif olarak kullanımdadır.
 
-Authors
+Türkçe versiyonu İstanbul PHP topluluğu tarafından çevirilmektedir. Türkçe kitaba ulaşmak için:
+
+ * phpinternalsbook.istanbulphp.org
+
+
+Yazarlar
 -------
 
 * Julien Pauli: jpauli@php.net
 * Nikita Popov: nikic@php.net
 * Anthony Ferrara: ircmaxell@php.net
+
+Çeviriler
+-------
+
+* Emir Karşıyakalı: emirkarsiyakali@gmail.com

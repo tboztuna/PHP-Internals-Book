@@ -1,4 +1,4 @@
-Table Of Contents
+İçindekiler
 =================
 
 PHP 5
@@ -10,14 +10,14 @@ PHP 5
     introduction.rst
     build_system.rst
 
-* Creating PHP extensions
+* PHP Eklentileri Oluşturmak
 
 .. toctree::
     :maxdepth: 2
 
     zvals.rst
 
-* Implementing functions
+* Fonksiyonları Uygulamak
 
 .. toctree::
     :maxdepth: 2
@@ -54,7 +54,7 @@ This part concerns only the PHP 7 branch. It is under development.
     php7/zend_engine.rst
     php7/final.rst
 
-Index and search
+Dizin ve Arama
 ================
 
 * :ref:`genindex`
