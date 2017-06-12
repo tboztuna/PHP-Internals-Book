@@ -1,25 +1,25 @@
-Introduction
+Giriş
 ============
 
-This book is a collaborative effort between several PHP developers to better document and describe how PHP works
-internally.
+Bu kitap, birkaç PHP geliştiricisinin işbirliği ile PHP'nin iç işleyişinin nasıl çalıştığını anlatmak ve daha iyi
+bir döküman elde etmek üzere hazırlanmıştır.
 
-There are three primary goals of this book:
+Bu kitabın 3 temel amacı vardır:
 
- * Document and describe how PHP internals work.
- * Document and describe how to extend the language with extensions.
- * Document and describe how you can interact with the community to develop PHP itself.
+ * PHP'nin iç işleyişini belgelemek ve açıklamak.
+ * Dilin eklentiler ile nasıl genişletilebileceğini belgelemek ve açıklamak.
+ * PHP'yi geliştirmek için toplulukla nasıl etkileşim kuracağınızı belgelemek ve açıklamak.
 
-This book is primarily targeted at developers who have experience in the C programming language. However, where-ever
-possible we will attempt to distill the information and summarize it so that developers who don't know C well, will
-still be able to understand the content.
+Bu kitap öncelikle C programlama dilinde tecrübesi olan geliştiricileri hedef almaktadır. Ancak, C programlama
+dilini hiç bilmeyen geliştiriciler için de anlaşılabilir olması için, bilgileri özetlemeye çalışacağız.
 
-.. note:: Some of the introductory chapters have not been written yet (in particular the ones on creating basic
-   extensions and declaring functions), so if you're completely new to PHP extension development you'll have to wait
-   until the remaining introductory chapters are published or start off with other
-   `resources on the topic <https://wiki.php.net/internals/references>`_.
+.. note:: Giriş bölümlerinden bazıları henüz yazılmadı (özellikle de temel eklenti geliştirme ve fonksiyon tanımlama 
+   ile ilgili olanlar), bu sebeple PHP eklentisi geliştirme konusunda yeniyseniz, geri kalan giriş dersleri
+   yayınlanana kadar beklemeniz gerekecek ya da bu konuyla ilgili
+   `diğer kaynaklardan <https://wiki.php.net/internals/references>`_ faydalanarak başlayabilirsiniz.
 
-The repository for this book is available on GitHub_. Please report issues and provide feedback on the `issue tracker`_.
+Bu kitabın reposu şu adreste mevcuttur: GitHub_. Hata bildirimi ve geridönüşlerinizi 
+şu adresten bildirebilirsiniz: `issue tracker`_.
 
 .. _GitHub: https://github.com/phpinternalsbook/PHP-Internals-Book
 .. _issue tracker: https://github.com/phpinternalsbook/PHP-Internals-Book/issues
