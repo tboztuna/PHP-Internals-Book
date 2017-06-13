@@ -1,4 +1,4 @@
-Implementing typed arrays
+Tipli dizilerin (typed arrays) implementasyonu
 =========================
 
 The previous two sections have been talking about the class system rather abstractly. In this section on the other hand

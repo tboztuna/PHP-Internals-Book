@@ -1,4 +1,4 @@
-Extensions design
+Eklentilerin dizaynı
 =================
 
 In this chapter you'll learn how to design PHP extensions. You'll learn about the PHP lifecycle, how and when to manage 

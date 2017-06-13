@@ -1,4 +1,4 @@
-Internal structures and implementation
+İç yapılar ve implementasyon
 ======================================
 
 In this (last) section on object orientation in PHP we'll have a look at some of the internal structures that were

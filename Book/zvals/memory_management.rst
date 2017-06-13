@@ -1,4 +1,4 @@
-Memory management
+Bellek yönetimi
 =================
 
 The zval structure has two roles: The first, which was described in the previous section, is to store a value and its

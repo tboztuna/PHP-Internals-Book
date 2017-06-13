@@ -1,4 +1,4 @@
-Memory management
+Bellek yönetimi
 =================
 
 C programmers usually have to deal with memory by hand. With dynamic memory, the programmer allocates memory when 

@@ -2,7 +2,7 @@
 
 .. _building_php:
 
-Building PHP
+PHP'yi yapılandırmak
 ============
 
 This chapter explains how you can compile PHP in a way that is suitable for development of extensions or core
@@ -16,7 +16,7 @@ description is outside the scope of this book.
 
 .. [#] Disclaimer: We are not liable for any adverse health effects caused by the attempt to compile PHP on Windows.
 
-Why not use packages?
+Paketleri neden kullanmamalıyız?
 ---------------------
 
 If you are currently using PHP, you likely installed it through your package manager, using a command like
@@ -44,7 +44,7 @@ supported version.
 
 .. _`php.net`: http://www.php.net
 
-Obtaining the source code
+Kaynak kodu edinmek
 -------------------------
 
 Before you can build PHP you first need to obtain its source code. There are two ways to do this: You can either
@@ -102,7 +102,7 @@ build-dependencies in one go. If you are only aiming for a default build, many o
 .. _Github: http://www.github.com/php/php-src
 .. _Git FAQ: https://wiki.php.net/vcs/gitfaq
 
-Build overview
+Yapılandırmaya genel bakış
 --------------
 
 Before taking a closer look at what the individual build steps do, here are the commands you need to execute for a
@@ -130,7 +130,7 @@ development.
 
 Now lets take a closer look at the individual build steps!
 
-The ``./buildconf`` script
+``./buildconf`` skripti
 --------------------------
 
 If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
@@ -158,7 +158,7 @@ the packaged source code and want to generate a new ``./configure``) and additio
 If you update your git repository using ``git pull`` (or some other command) and get weird errors during the ``make``
 step, this usually means that something in the build configuration changed and you need to run ``./buildconf --force``.
 
-The ``./configure`` script
+``./configure`` skripti
 --------------------------
 
 Once the ``./configure`` script is generated you can make use of it to customize your PHP build. You can list all
@@ -292,7 +292,7 @@ For GCC, you may read them `in the GCC manual`_
 
 .. _in the GCC manual: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
 
-``make`` and ``make install``
+``make`` ve ``make install``
 -----------------------------
 
 After everything is configured, you can use ``make`` to perform the actual compilation::
@@ -422,7 +422,7 @@ build process to obtain information about compiler options and paths. You can al
 about your build, e.g. your configure options or the default extension directory. This information is also provided by
 ``./php -i`` (phpinfo), but ``php-config`` provides it in a simpler form (which can be easily used by automated tools).
 
-Running the test suite
+Test ortamını çalıştırmak
 ----------------------
 
 If the ``make`` command finishes successfully, it will print a message encouraging you to run ``make test``:
@@ -474,7 +474,7 @@ be::
 We will take a more detailed look at the ``run-tests.php`` system later, in particular also talk about how to write your
 own tests and how to debug test failures.
 
-Fixing compilation problems and ``make clean``
+Derleme problemlerini gidermek ve ``make clean`` komutu
 ----------------------------------------------
 
 As you may know ``make`` performs an incremental build, i.e. it will not recompile all files, but only those ``.c``

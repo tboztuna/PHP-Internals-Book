@@ -1,4 +1,4 @@
-Custom object storage
+Özel nesne depolama
 =====================
 
 The previous section laid the ground for the creation of simple internal classes. Most of the features described there

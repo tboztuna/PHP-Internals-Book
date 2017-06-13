@@ -1,4 +1,4 @@
-Hash algorithm and collisions
+Hash algoritması ve çakışma
 =============================
 
 In this final section on hashtables, we'll have a closer look at worst-case collision scenarios and some properties of

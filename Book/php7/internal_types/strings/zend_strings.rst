@@ -1,4 +1,4 @@
-Strings management : zend_string
+String yönetimi: zend_string
 ================================
 
 Any program needs to manage strings. Here, we'll detail the zend_string structure which helps for that.

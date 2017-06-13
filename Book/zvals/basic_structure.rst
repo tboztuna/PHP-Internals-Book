@@ -1,4 +1,4 @@
-Basic structure
+Temel yapı
 ===============
 
 A zval (short for "Zend value") represents an arbitrary PHP value. As such it is likely the most important structure in

@@ -1,4 +1,4 @@
-Learning the PHP lifecycle
+PHP hayat döngüsünü öğrenmek
 ==========================
 
 PHP's a complex machinery which lifecycle should really be mastered by anyone pretending to hook into it.
@@ -27,7 +27,7 @@ If we would have drawn those steps, that could give something like this:
 .. image:: ./images/php_classic_lifetime.png
    :align: center
 
-The parallelism models
+Paralellik modelleri
 **********************
 
 In a CLI environment, everything is easy : one PHP process will treat one request : it will launch one solo PHP script, 
@@ -61,7 +61,7 @@ And here is the thread-based model:
           You will have to support the fact that your extension could run in a threaded environment, especially under 
           Windows platforms, and you'll have to program against it.
 
-The PHP extensions hooks
+PHP eklenti hookları
 ************************
 
 As you could have guessed, the PHP engine will trigger your extension at several lifetime points. We call those *hook 
@@ -263,7 +263,7 @@ threads as multi-processing engine, then you crash every other thread with you, 
 
 .. todo: Add a chapter about debugging. Add a chapter about memory leak tracking.
 
-Hooking by overwritting function pointers
+Fonksiyon işaretçilerini üzerine yazarak hooklamak
 *****************************************
 
 Now you know when the engine will trigger your code, there exists also noticeable function pointers you may replace to 

@@ -1,4 +1,4 @@
-Internal types
+Dahili tipler
 ==============
 
 In this chapter we will detail the special types used internally by PHP. Some of those types are directly bound to 

@@ -2,7 +2,7 @@
 
 .. _building_php:
 
-Building PHP
+PHP'yi yapılandırmak
 ============
 
 This chapter explains how you can compile PHP in a way that is suitable for development of extensions or core

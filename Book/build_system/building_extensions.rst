@@ -1,6 +1,6 @@
 .. highlight:: bash
 
-Building PHP extensions
+PHP eklentilerini yapılandırmak
 =======================
 
 Now that you know how to compile PHP itself, we'll move on to compiling additional extensions. We'll discuss how the

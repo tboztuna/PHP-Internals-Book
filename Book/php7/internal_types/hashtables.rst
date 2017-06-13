@@ -1,4 +1,4 @@
-HashTables
+Hash tabloları
 ==========
 
 

@@ -1,4 +1,4 @@
-Zend Memory Manager
+Zend Bellek Yöneticisi
 ===================
 
 Zend Memory Manager, often abbreviated as ZendMM or ZMM, is a C layer that aims to provide abilities to allocate and 
@@ -9,7 +9,7 @@ Note the "request-bound" in the above sentence.
 ZendMM is not just a classical layer over libc's dynamic memory allocator, mainly represented by the couple API calls 
 ``malloc()/free()``. ZendMM is about request-bound memory that PHP must allocate while treating a request.
 
-The two main kind of dynamic memory pools in PHP
+PHP'nin iki ana dinamik bellek havuzu 
 ************************************************
 
 PHP is a share-nothing architecture. Well, not at 100%. Let us explain.
@@ -95,7 +95,7 @@ deallocation function when destroyed. Hence in such a code::
 The API knows whether those structures were allocated using request-bound allocation, or permanent one, and in the 
 first case will use ``efree()`` to release it, and in the second case libc's ``free()``.
 
-Zend Memory Manager API
+Zend Bellek Yöneticisi API
 ***********************
 
 The API is located into 
@@ -124,7 +124,7 @@ strings.
 Whatever happens, pointers returned by ZendMM must be freed using ZendMM, aka ``efree()`` call and 
 **not libc's free()**.
 
-Zend Memory Manager debugging shields
+Zend Bellek Yöneticisi hata ayıklama kalkanı
 *************************************
 
 ZendMM provides the following abilities:
@@ -212,7 +212,7 @@ What you must remember is that ZendMM leak tracking is a nice bonus tool to have
 Buffer overflows or underflows
 ------------------------------
 
-Zend Memory Manager engine
+Zend Bellek Yöneticisi motoru
 **************************
 
 ZendMM substitutes to libc's API by providing a very similar one. That API should only be used when treating requests.

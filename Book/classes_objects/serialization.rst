@@ -1,4 +1,4 @@
-Serialization
+Serileştirme
 =============
 
 In this section we'll have a look at PHP's serialization format and the different mechanisms PHP provides to serialize
