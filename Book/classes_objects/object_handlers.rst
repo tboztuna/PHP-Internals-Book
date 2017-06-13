@@ -1,4 +1,4 @@
-Object handlers
+Nesne işleyicileri
 ===============
 
 In the previous sections you already had some contact with object handlers. In particular you should know how to create

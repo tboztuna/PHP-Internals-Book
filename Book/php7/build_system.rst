@@ -1,4 +1,4 @@
-Using the PHP build system
+PHP yapı sistemini kullanmak
 ==========================
 
 In this chapter we'll explain how to use the PHP build system to compile both itself and additional extensions. This

@@ -1,4 +1,4 @@
-Symtable and array API
+Symtable ve array API
 ======================
 
 The hashtable API allows you to work with values of any type, but in the vast majority of cases the values will be

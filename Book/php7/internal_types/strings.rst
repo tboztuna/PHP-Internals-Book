@@ -1,4 +1,4 @@
-Strings management
+String yönetimi
 ==================
 
 Any program needs to manage strings. Managing is like allocating, searching, concatenating, extending, shrinking etc..

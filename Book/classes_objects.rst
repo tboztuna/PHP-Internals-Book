@@ -1,4 +1,4 @@
-Classes and objects
+Sınıflar ve nesneler
 ===================
 
 In recent years PHP has been turning more and more from a procedural language to an object-oriented one. Even though

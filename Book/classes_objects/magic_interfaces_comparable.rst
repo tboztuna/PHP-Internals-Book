@@ -1,4 +1,4 @@
-Magic interfaces - Comparable
+Sihirli arayüzler - Karşılaştırılabilir
 =============================
 
 Internal interfaces in PHP are very similar to their userland equivalents. The only notable difference is that internal

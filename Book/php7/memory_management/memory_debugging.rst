@@ -1,3 +1,3 @@
-Debugging memory
+Bellekte hata ayıklama
 ================
 

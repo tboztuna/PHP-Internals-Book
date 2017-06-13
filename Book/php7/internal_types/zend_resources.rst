@@ -1,4 +1,4 @@
-The Resource type: zend_resource
+Bir kaynak tipi: zend_resource
 ================================
 
 Even though PHP could really get rid of the "resource" type, because 
@@ -12,7 +12,7 @@ makes use of it in its heart or in some extensions. Let's see that type together
 and suffers from a long past history, so don't be suprised about its design especially when reading the source code 
 about it
 
-What is the "Resource" type ?
+"Kaynak" nedir?
 -----------------------------
 
 Easy enough you know about it. We are talking about this here:
@@ -43,7 +43,7 @@ how they are fetched back from their handle.
 Finally, the ``ptr`` field in ``zend_resource`` is your abstract data. Remember resources are about storing an abstract 
 data that cannot fit in any data type PHP can represent natively.
 
-Resource types and resource destruction
+Kaynak tipleri ve kaynak yok etme
 ---------------------------------------
 
 Resources must register a destructor. When users use resources in PHP userland, they usually don't bother cleaning 
@@ -64,7 +64,7 @@ There also exists two kinds of resources, here again differenciated about their 
   request shutdown
 * Persistent resources will persist across several requests and will only get destroyed when the PHP process dies.
 
-Playing with resources
+Kaynaklarla oynamak
 ----------------------
 
 The resources related API can be found in 
@@ -140,7 +140,7 @@ connection") into the same resource table. Resource types have names, so that th
 debug statement (like a ``var_dump($my_resource)``), and they also are represented as an integer used internaly to 
 fetch back the resource pointer from it, and to register a destructor with the resource type.
 
-Reference counting resources
+Referans sayma kaynakları
 ----------------------------
 
 Like many other types, ``zend_resource`` is reference counted. We can see its ``zend_refcounted_h`` header. Here is the 
@@ -150,7 +150,7 @@ API to play with reference counting, if you need it (you shouldn't really need i
 * ``zend_list_free(zend_resource *res)`` checks if refcount is zero, and destroys the resource if true.
 * ``zend_list_close(zend_resource *res)`` calls the resource destructor whatever the conditions
 
-Persistent resources
+Kalıcı kaynaklar
 --------------------
 
 Persistent resources don't get destroyed at the end of the request. The classical use-case for that are persistent 

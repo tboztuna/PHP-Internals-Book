@@ -1,4 +1,4 @@
-Basic structure
+Temel yapı
 ===============
 
 Basic concepts

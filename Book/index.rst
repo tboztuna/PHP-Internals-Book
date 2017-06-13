@@ -10,14 +10,14 @@ PHP 5
     introduction.rst
     build_system.rst
 
-* PHP Eklentileri Oluşturmak
+* PHP eklentileri oluşturmak
 
 .. toctree::
     :maxdepth: 2
 
     zvals.rst
 
-* Fonksiyonları Uygulamak
+* Fonksiyonları uygulamak
 
 .. toctree::
     :maxdepth: 2
@@ -28,7 +28,7 @@ PHP 5
 PHP 7
 -----
 
-This part concerns only the PHP 7 branch. It is under development.
+Bu kısım sadece PHP 7 ile ilgilidir. Henüz geliştirme aşamasındadır.
 
 .. toctree::
     :maxdepth: 3

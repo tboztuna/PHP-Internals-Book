@@ -1,4 +1,4 @@
-Managing global scope
+Global alanı yönetmek
 =====================
 
 

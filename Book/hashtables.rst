@@ -1,4 +1,4 @@
-Hashtables
+Hash tabloları
 ==========
 
 Hashtables are one of the most important structures used by PHP. They form the basis for arrays, object properties,

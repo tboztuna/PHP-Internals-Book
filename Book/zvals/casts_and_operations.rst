@@ -1,7 +1,7 @@
-Casts and operations
+Dönüşümler ve işlemler
 ====================
 
-Basic operations
+Temel işlemler
 ----------------
 
 As zvals are complex structures you can't directly perform basic operations like ``zv1 + zv2`` on them. Doing something
