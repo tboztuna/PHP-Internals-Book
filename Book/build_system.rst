@@ -1,11 +1,11 @@
 PHP yapı sistemini kullanmak
 ==========================
 
-In this chapter we'll explain how to use the PHP build system to compile both itself and additional extensions. This
-chapter will not yet be concerned with writing your own autoconf build instructions and only explain how to use the
-tooling.
+Bu bölümde PHP yapı sistemini kullanarak PHP eklentilerini ve PHP'yi nasıl derleyeceğinizi anlatacağız.
+Henüz autoconf yapılandırma talimatları üzerinde durulmayacak, sadece araçların nasıl kullanılacağı
+anlatılacaktır.
 
-Contents:
+İçerik:
 
 .. toctree::
     :maxdepth: 2

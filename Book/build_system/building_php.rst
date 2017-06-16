@@ -5,18 +5,20 @@
 PHP'yi yapılandırmak
 ============
 
-This chapter explains how you can compile PHP in a way that is suitable for development of extensions or core
-modifications. We will only cover builds on Unixoid systems. If you wish to build PHP on Windows, you should take a look
-at the `step-by-step build instructions`__ in the PHP wiki [#]_.
+Bu bölüm, PHP'yi, eklenti geliştirme veya çekirdek üzerinde modifikasyonlar yapabilmeye uygun şekilde derlemeyi
+açıklayacaktır.
 
-This chapter also provides an overview of how the PHP build system works and which tools it uses, but a detailed
-description is outside the scope of this book.
+Anlatım, sadece Unix ve türevleri olan işletim sistemlerini kapsamaktadır. Eğer PHP'yi Windows
+işletim sistemi üzerinde derlemek istiyorsanız, `adım adım yapılandırma talimatlarını`__ inceleyin [#]_.
+
+Bu bölüm aynı zamanda, PHP yapılandırma sisteminin nasıl çalıştığına ve hangi araçları kullandığına
+dair genel bir bakış açısı sağlar, detaylı açıklamalar bu kitabın kapsamı dışındadır.
 
 .. __: https://wiki.php.net/internals/windows/stepbystepbuild
 
-.. [#] Disclaimer: We are not liable for any adverse health effects caused by the attempt to compile PHP on Windows.
+.. [#] Sorumluluk reddi: PHP'yi Windows'ta derleme esnasında kaynaklanabilecek olumsuz etkilerden sorumlu değiliz.
 
-Why not use packages?
+Paketleri neden kullanmamalıyız?
 ---------------------
 
 If you are currently using PHP, you likely installed it through your package manager, using a command like
