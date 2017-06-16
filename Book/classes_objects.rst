@@ -1,10 +1,10 @@
 Sınıflar ve nesneler
 ===================
 
-In recent years PHP has been turning more and more from a procedural language to an object-oriented one. Even though
-the fundamentals are still of procedural nature (in particular large parts of the standard library) most library code
-nowadays is developed in terms of classes and objects. This chapter covers the rather complex internals of PHP's object
-orientation system.
+Son yıllarda PHP, her geçen gün prosedürel bir dilden nesneye dayalı bir dile dönüşüyor. Temeller hala prosedürel
+nitelikte olmasına rağmen (özellikle de standart kütüphanenin büyük bölümleri) günümüzdeki kütüphaneler sınıflar ve
+nesne yönelimli geliştirilmektedir. Bu bölüm, PHP'nin nesne yönlü sisteminin oldukça karmaşık iç yapılarını
+kapsamaktadır.
 
 Contents:
 
