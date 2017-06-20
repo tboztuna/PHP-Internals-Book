@@ -18,12 +18,12 @@ dair genel bir bakış açısı sağlar, detaylı açıklamalar bu kitabın kaps
 
 .. [#] Sorumluluk reddi: PHP'yi Windows'ta derleme esnasında doğabilecek olumsuz etkilerden sorumlu değiliz.
 
-Paketleri neden kullanmamalıyız?
+Neden paketleri kullanmıyorsun?
 ---------------------
 
 PHP'yi kullanıyorsanız, büyük ihtimalle paketleri yüklerken ``sudo apt-get install php`` gibi bir komut
 kullandınız. Gerçek derleme işleminden bahsetmeye geçmeden önce, elle derleme yapmanın gerekliliğini ve
-önceden oluşturulmuş paketleri neden kullanılmaması gerektiğini anlamanız gerekiyor. 
+neden sadece önceden oluşturulmuş paketleri kullanamayacağınızı anlatmamız gerekiyor. 
 Bunun birkaç nedeni var:
 
 Öncelikle şunu bilmeniz gerekir ki, önceden oluşturulmuş paketlerde gerekli PHP dosyalarının yalnızca release

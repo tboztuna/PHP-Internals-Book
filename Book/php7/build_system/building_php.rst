@@ -16,7 +16,7 @@ description is outside the scope of this book.
 
 .. [#] Disclaimer: We are not liable for any adverse health effects caused by the attempt to compile PHP on Windows.
 
-Paketleri neden kullanmamalıyız?
+Neden paketleri kullanmıyorsun?
 ---------------------
 
 If you are currently using PHP, you likely installed it through your package manager, using a command like
