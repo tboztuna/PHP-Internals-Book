@@ -19,28 +19,31 @@ description is outside the scope of this book.
 Neden paketleri kullanmıyorsun?
 ---------------------
 
-If you are currently using PHP, you likely installed it through your package manager, using a command like
-``sudo apt-get install php``. Before explaining the actual compilation you should first understand why doing your own
-compile is necessary and you can't just use a prebuilt package. There are multiple reasons for this:
+PHP'yi kullanıyorsanız, büyük ihtimalle paketleri yüklerken ``sudo apt-get install php`` gibi bir komut
+kullandınız. Gerçek derleme işleminden bahsetmeye geçmeden önce, elle derleme yapmanın gerekliliğini ve
+neden sadece önceden oluşturulmuş paketleri kullanamayacağınızı anlatmamız gerekiyor. 
+Bunun birkaç nedeni var:
 
-Firstly, the prebuilt package only contains the resulting binaries, but misses other things that are necessary to
-compile extensions, e.g. header files. This can be easily remedied by installing a development package, which is
-typically called ``php-dev``. To facilitate debugging with valgrind or gdb one could additionally install debug symbols,
-which are usually available as another package called ``php-dbg``.
+Öncelikle şunu bilmeniz gerekir ki, önceden oluşturulmuş paketlerde gerekli PHP dosyalarının yalnızca release
+hali bulunur. Fakat, istediğimiz derleme işlemini yapabilmeniz için header dosyaları, derleme eklentileri gibi 
+dosyalar da gereklidir. Neyse ki bize gerekli olan dosyaları, ``php-dev`` denilen geliştirme paketini yükleyerek
+sağlayabiliriz. Valgring ya da gdb gibi araçlarla hata ayıklama işlemi yapmak istersek, ekstra olarak hata ayıklama
+sembollerini yüklememiz gerekmektedir. Hata ayıklama araçlarının düzgün çalışmasını ``php-dbg`` hata ayıklama 
+sembollerini yükleyerek çözebiliriz.
 
-But even if you install headers and debug symbols, you'll still be working with a release build of PHP. This means that
-it will be built with high optimization level, which can make debugging very hard. Furthermore release builds will not
-generate warnings about memory leaks or inconsistent data structures. Additionally prebuilt packages don't enable thread
-safety, which is very helpful during development.
+Aslında header'leri ve hata ayıklama ayıklama sembollerini yüklemiş bile olsanız hala PHP'nin release versiyonu ile
+çalışıyorsunuz. Yani şu anlama geliyor ki: PHP yüksek optimizasyon ile yapılandırılmış ve bu da sizin hata ayıklama
+işlemlerinizi zorlaştıracak. Dahası, release versiyonları hafıza sızıntıları veya tutarsız veri yapıları hakkında
+size uyarı vermeyecektir. Aynı zamanda, önceden yapılandırılmış paketlerde iş parçacıklarının güvenliği
+sağlanmamaktadır, bu da geliştirme sırasında çok faydalı olacaktır. 
 
-Another issue is that nearly all distributions apply additional patches to PHP. In some cases these patches only
-contain minor changes related to configuration, but some distributions make use of highly intrusive patches like
-Suhosin. Some of these patches are known to introduce incompatibilities with low-level extensions like opcache.
+Bir diğer konu ise, hemen hemen tüm dağıtımlar PHP'ye ekstra yamalar uygulamaktadır. Bazı durumlarda bu yamalar,
+yapılandırma ile ilgili küçük değişiklikler içerirken, bazen ise Suhosin gibi son derece müdahaleci olabilirler.
+Bu yamaların bazıları opcache gibi düşük seviye eklentilerle uyumsuzluk yaratmalarıyla bilinirler.
 
-PHP only provides support for the software as provided on `php.net`_ and not for the distribution-modified versions. If
-you want to report bugs, submit patches or make use of our help channels for extension-writing, you should always work
-against the official PHP version. When we talk about "PHP" in this book, we're always referring to the officially
-supported version.
+PHP sadece `php.net`_ üzerinde yayınlanan versiyonu için destek vermektedir. Eğer hata bildirimi yapmak, yama göndermek,
+ya da eklenti yazmak için yardım kanallarımızı kullanmak istiyorsanız, daima resmi PHP versiyonu üzerinde
+çalışmalısınız. Bu kitapta PHP'den söz ederken tamamen resmi sürümden bahsediyor olacağız.
 
 .. _`php.net`: http://www.php.net
 
