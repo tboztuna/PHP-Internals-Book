@@ -1,7 +1,7 @@
 PHP-Internals-Book
 ==================
 
-Döküman Formatı: RST
+Doküman Formatı: RST
 --------------------
 
 Kitap ReStructured Text ile yazılıp Sphinx ile üretilmektedir.
