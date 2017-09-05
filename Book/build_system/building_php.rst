@@ -52,30 +52,32 @@ ya da eklenti yazmak için yardım kanallarımızı kullanmak istiyorsanız, dai
 Kaynak kodu edinmek
 -------------------------
 
-Before you can build PHP you first need to obtain its source code. There are two ways to do this: You can either
-download an archive from `PHP's download page`_ or clone the git repository from `git.php.net`_ (or the mirror on
-`Github`_).
+PHP'yi yapılandırmadan önce, kaynak kodunu edinmeniz gerekmektedir. Kodu edinmenin iki yolu var: Arşiv dosyasını
+`PHP'nin indirme sayfasından`_ ya da git reposundan `git.php.net`_ (ya da
+`Github`_ ikiz bağlantısından) edinebilirsiniz.
 
-The build process is slightly different for both cases: The git repository doesn't bundle a ``configure`` script, so
-you'll need to generate it using the ``buildconf`` script, which makes use of autoconf. Furthermore the git repository
-does not contain a pregenerated parser, so you'll also need to have bison installed.
+Yukarıdaki her iki durum için yapılandırma işlemi farklı olarak gerçekleşiyor: Git reposundaki arşiv bir ``configure`` 
+skripti içermiyor. Bundan dolayı, aslında ``autoconf``'u kullanan ``buildconf`` skriptini kullanarak, bir ``configure`` 
+skripti oluşturmanız gerekecek. Ek olarak, git reposu önceden oluşturulmuş bir ayrıştırıcı içermiyor, bu eksikliğin
+giderilmesi için bilgisayarınızda bison'un yüklü olması gerekiyor.
 
-We recommend to checkout out the source code from git, because this will provide you with an easy way to keep your
-installation updated and to try your code with different versions. A git checkout is also required if you want to
-submit patches or pull requests for PHP.
+PHP kaynak kodunu git üzerinden edinmenizi tavsiye ediyoruz, bu yöntem ile kurulumunuz en güncel halde kalacak ve
+kodunuzu farklı PHP versiyonları ile deneyebileceksiniz. Aynı zamanda, PHP yaması veya pull request yapmak 
+istediğinizde yine kodu git üzerinden çekmiş olmanız gerekmektedir.
 
-To clone the repository, run the following commands in your shell::
+Repoyu klonlamak için, aşağıdaki komutları kabuk(shell) üzerinde çalıştırın::
 
     ~> git clone http://git.php.net/repository/php-src.git
     ~> cd php-src
-    # by default you will be on the master branch, which is the current
-    # development version. You can check out a stable branch instead:
+    # ilk olarak master branch'inde olacaksınız, stabil bir versiyona geçmek isterseniz
+    # aşağıdaki komutu kullanabilirsiniz:
     ~/php-src> git checkout PHP-5.5
 
-If you have issues with the git checkout, take a look at the `Git FAQ`_ on the PHP wiki. The Git FAQ also explains how
-to setup git if you want to contribute to PHP itself. Furthermore it contains instructions on setting up multiple
-working directories for different PHP versions. This can be very useful if you need to test your extensions or changes
-against multiple PHP versions and configurations.
+git checkout ile ilgili problem yaşıyorsanız, PHP wiki'sindeki `Git SSS`_'a bakabilirsiniz. Git SSS aynı zamanda,
+PHP için geliştirme yapıp katkıda bulunmak istiyorsanız, buna uygun nasıl bir kurulum yapmanız
+gerektiğini de açıklıyor. Ek olarak, çoklu klasör mantığıyla, farklı PHP versiyonları üzerinde nasıl
+çalışılabileceğinize dair ayarların da açıklaması mevcut. Bu yöntem, yazdığınız eklentileri veya
+yaptığınız değişiklikleri farklı versiyonlar üzerinde, farklı ayarlarla test etmede faydalı olacaktır.
 
 Before continuing you should also install some basic build dependencies with your package manager (you'll likely already
 have the first three installed by default):
@@ -102,10 +104,10 @@ default PHP build will require libxml, which you can install via the ``libxml2-d
 If you are using Debian or Ubuntu you can use ``sudo apt-get build-dep php5`` to install a large number of optional
 build-dependencies in one go. If you are only aiming for a default build, many of them will not be necessary though.
 
-.. _PHP's download page: http://www.php.net/downloads.php
+.. _PHP'nin indirme sayfasından: http://www.php.net/downloads.php
 .. _git.php.net: http://git.php.net
 .. _Github: http://www.github.com/php/php-src
-.. _Git FAQ: https://wiki.php.net/vcs/gitfaq
+.. _Git SSS: https://wiki.php.net/vcs/gitfaq
 
 Yapılandırma önizlemesi
 --------------
