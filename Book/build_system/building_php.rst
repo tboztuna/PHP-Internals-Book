@@ -3,7 +3,7 @@
 .. _building_php:
 
 PHP'yi yapılandırmak
-============
+====================
 
 Bu bölüm, PHP'yi, eklenti geliştirme veya çekirdek üzerinde modifikasyonlar yapabilmeye uygun şekilde derlemeyi
 açıklayacaktır.
@@ -19,7 +19,7 @@ dair genel bir bakış açısı sağlar, detaylı açıklamalar bu kitabın kaps
 .. [#] Sorumluluk reddi: PHP'yi Windows'ta derleme esnasında doğabilecek olumsuz etkilerden sorumlu değiliz.
 
 Neden paketleri kullanmıyorsun?
----------------------
+-------------------------------
 
 PHP'yi kullanıyorsanız, büyük ihtimalle paketleri yüklerken ``sudo apt-get install php`` gibi bir komut
 kullandınız. Gerçek derleme işleminden bahsetmeye geçmeden önce, elle derleme yapmanın gerekliliğini ve
@@ -50,7 +50,7 @@ ya da eklenti yazmak için yardım kanallarımızı kullanmak istiyorsanız, dai
 .. _`php.net`: http://www.php.net
 
 Kaynak kodunu edinmek
--------------------------
+---------------------
 
 PHP'yi yapılandırmadan önce, kaynak kodunu edinmeniz gerekmektedir. Kodu edinmenin iki yolu var: Arşiv dosyasını
 `PHP'nin indirme sayfasından`_ ya da git reposundan `git.php.net`_ (ya da
@@ -89,9 +89,7 @@ ilk üçü yüklü olarak gelecektir):
 * ``automake`` (1.4 ya da üzeri), ``Makefile.in`` dosyalarını oluşturur.
 * ``libtool``, paylaşımlı kütüphaneleri yönetmeye yardımcı olur.
 * ``bison`` (2.4 ya da üzeri), PHP ayrıştırıcısını oluşturmak için kullanılır.
-* (opsiyonel) ``re2c``, PHP lekserini/ayrıştırıcısını oluşturmak için kullanılır. Eğer kaynak kodunu git reposundan
-edindiyseniz, içerisinde daha önceden oluşturulmuş bir lekser/ayrıştırıcı bulunmaktadır. Üzerinde değişiklik yapmak
-isterseniz, sadece re2c'e ihtiyacınız olacaktır.
+* (opsiyonel) ``re2c``, PHP lekserini/ayrıştırıcısını oluşturmak için kullanılır. Eğer kaynak kodunu git reposundan edindiyseniz, içerisinde daha önceden oluşturulmuş bir lekser/ayrıştırıcı bulunmaktadır, üzerinde değişiklik yapmak isterseniz,sadece re2c'e ihtiyacınız olacaktır.
 
 Bunların hepsini Debian/Ubuntu üzerinde, aşağıdaki komutu çalıştırarak yükleyebilirsiniz::
 
@@ -111,7 +109,7 @@ tek seferde yükleyebilirsiniz. Sadece varsayılan yapılandırmayı istiyorsan�
 .. _Git SSS: https://wiki.php.net/vcs/gitfaq
 
 Yapılandırma önizlemesi
---------------
+-----------------------
 
 Before taking a closer look at what the individual build steps do, here are the commands you need to execute for a
 "default" PHP build::
@@ -139,7 +137,7 @@ development.
 Now lets take a closer look at the individual build steps!
 
 ``./buildconf`` skripti
---------------------------
+-----------------------
 
 If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
 script does little more than invoking the ``build/build.mk`` makefile, which in turn calls ``build/build2.mk``.
@@ -167,7 +165,7 @@ If you update your git repository using ``git pull`` (or some other command) and
 step, this usually means that something in the build configuration changed and you need to run ``./buildconf --force``.
 
 ``./configure`` skripti
---------------------------
+-----------------------
 
 Once the ``./configure`` script is generated you can make use of it to customize your PHP build. You can list all
 supported options using ``--help``::
@@ -299,7 +297,7 @@ In this configuration the build will make use of clang (instead of gcc) and use 
 (``-O3 -march=native``).
 
 ``make`` ve ``make install``
------------------------------
+----------------------------
 
 After everything is configured, you can use ``make`` to perform the actual compilation::
 
@@ -429,7 +427,7 @@ about your build, e.g. your configure options or the default extension directory
 ``./php -i`` (phpinfo), but ``php-config`` provides it in a simpler form (which can be easily used by automated tools).
 
 Test ortamını çalıştırmak
-----------------------
+-------------------------
 
 If the ``make`` command finishes successfully, it will print a message encouraging you to run ``make test``:
 
@@ -481,7 +479,7 @@ We will take a more detailed look at the ``run-tests.php`` system later, in part
 own tests and how to debug test failures.
 
 Derleme problemlerini gidermek ve ``make clean`` komutu
-----------------------------------------------
+-------------------------------------------------------
 
 As you may know ``make`` performs an incremental build, i.e. it will not recompile all files, but only those ``.c``
 files that changed since the last invocation. This is a great way to shorten build times, but it doesn't always work
