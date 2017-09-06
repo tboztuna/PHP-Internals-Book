@@ -79,32 +79,31 @@ gerektiğini de açıklıyor. Ek olarak, çoklu klasör mantığıyla, farklı P
 çalışılabileceğinize dair ayarların da açıklaması mevcut. Bu yöntem, yazdığınız eklentileri veya
 yaptığınız değişiklikleri farklı versiyonlar üzerinde, farklı ayarlarla test etmede faydalı olacaktır.
 
-Before continuing you should also install some basic build dependencies with your package manager (you'll likely already
-have the first three installed by default):
+Devam etmeden önce, paket yöneticiniz vasıtasıyla bazı bağlılıkları yüklemeniz gerekmektedir (büyük ihtimalle
+ilk üçü yüklü olarak gelecektir):
 
-Devam etmeden önce, bazı temel yapılandırma bap
+* ``gcc`` veya başka bir derleyici paketi.
+* ``libc-dev``, başlıkları ve C standart kütüphanesini içerir.
+* ``make``, PHP'nin kullandığı kurulum aracı.
+* ``autoconf`` (2.59 ya da üzeri), ``configure`` skriptini oluşturmak için kullanılır.
+* ``automake`` (1.4 ya da üzeri), ``Makefile.in`` dosyalarını oluşturur.
+* ``libtool``, paylaşımlı kütüphaneleri yönetmeye yardımcı olur.
+* ``bison`` (2.4 ya da üzeri), PHP ayrıştırıcısını oluşturmak için kullanılır.
+* (opsiyonel) ``re2c``, PHP lekserini/ayrıştırıcısını oluşturmak için kullanılır. Eğer kaynak kodunu git reposundan
+edindiyseniz, içerisinde daha önceden oluşturulmuş bir lekser/ayrıştırıcı bulunmaktadır. Üzerinde değişiklik yapmak
+isterseniz, sadece re2c'e ihtiyacınız olacaktır.
 
-* ``gcc`` or some other compiler suite.
-* ``libc-dev``, which provides the C standard library, including headers.
-* ``make``, which is the build-management tool PHP uses.
-* ``autoconf`` (2.59 or higher), which is used to generate the ``configure`` script.
-* ``automake`` (1.4 or higher), which generates ``Makefile.in`` files.
-* ``libtool``, which helps manage shared libraries.
-* ``bison`` (2.4 or higher), which is used to generate the PHP parser.
-* (optional) ``re2c``, which is used to generate the PHP lexer. As the git repository already contains a generated
-  lexer you will only need re2c if you wish to make changes to it.
-
-On Debian/Ubuntu you can install all these with the following command::
+Bunların hepsini Debian/Ubuntu üzerinde, aşağıdaki komutu çalıştırarak yükleyebilirsiniz::
 
     ~/php-src> sudo apt-get install build-essential autoconf automake libtool bison re2c
 
-Depending on the extensions that you enable during the ``./configure`` stage PHP will need a number of additional
-libraries. When installing these, check if there is a version of the package ending in ``-dev`` or ``-devel`` and
-install them instead. The packages without ``dev`` typically do not contain necessary header files. For example a
-default PHP build will require libxml, which you can install via the ``libxml2-dev`` package.
+``./configure`` aşamasında etkinleştirdiğiniz eklentilere bağlı olarak, PHP farklı kütüphanelere de ihtiyaç duyabilir.
+Bunları yüklerken, ilgili paketin sonu ``-dev`` ya da ``-devel`` biten versiyonu varsa, onu yükleyin.
+``dev`` etiketi barındırmayan paketler genelde gerekli başlık dosyalarını içermezler. Örneğin varsayılan bir
+PHP yapılandırması libxml'e ihtiyaç duyar, bunu da ``libxml2-dev`` olarak yüklersiniz.
 
-If you are using Debian or Ubuntu you can use ``sudo apt-get build-dep php5`` to install a large number of optional
-build-dependencies in one go. If you are only aiming for a default build, many of them will not be necessary though.
+Eğer Debian ya da Ubuntu kullanıyorsanız, you can use ``sudo apt-get build-dep php5`` komutuyla birçok bağlılığı
+tek seferde yükleyebilirsiniz. Sadece varsayılan yapılandırmayı istiyorsanız, bunların birçoğu gereksiz olacaktır.
 
 .. _PHP'nin indirme sayfasından: http://www.php.net/downloads.php
 .. _git.php.net: http://git.php.net
