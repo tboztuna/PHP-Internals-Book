@@ -49,7 +49,7 @@ ya da eklenti yazmak için yardım kanallarımızı kullanmak istiyorsanız, dai
 
 .. _`php.net`: http://www.php.net
 
-Kaynak kodu edinmek
+Kaynak kodunu edinmek
 -------------------------
 
 PHP'yi yapılandırmadan önce, kaynak kodunu edinmeniz gerekmektedir. Kodu edinmenin iki yolu var: Arşiv dosyasını
@@ -81,6 +81,8 @@ yaptığınız değişiklikleri farklı versiyonlar üzerinde, farklı ayarlarla
 
 Before continuing you should also install some basic build dependencies with your package manager (you'll likely already
 have the first three installed by default):
+
+Devam etmeden önce, bazı temel yapılandırma bap
 
 * ``gcc`` or some other compiler suite.
 * ``libc-dev``, which provides the C standard library, including headers.
