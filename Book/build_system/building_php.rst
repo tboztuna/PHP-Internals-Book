@@ -142,8 +142,8 @@ kullanacaksanız sizin için uygun olabilir.
 ``./buildconf`` skripti
 -----------------------
 
-If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
-script does little more than invoking the ``build/build.mk`` makefile, which in turn calls ``build/build2.mk``.
+Eğer yapılandırma işlemine git reposundan başladıysanız, ilk önce ``./buildconf`` skriptini çalıştırmanız
+gerekmektedir. Bu skript, ``build/build.mk`` dosyasını çağırmaktan daha fazlasını yapar. 
 
 The main job of these makefiles is to run ``autoconf`` to generate the ``./configure`` script and ``autoheader`` to
 generate the ``main/php_config.h.in`` template. The latter file will be used by configure to generate the final
