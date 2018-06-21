@@ -143,22 +143,25 @@ kullanacaksanız sizin için uygun olabilir.
 -----------------------
 
 Eğer yapılandırma işlemine git reposundan başladıysanız, ilk önce ``./buildconf`` skriptini çalıştırmanız
-gerekmektedir. Bu skript, ``build/build.mk`` dosyasını çağırmaktan daha fazlasını yapar. 
+gerekmektedir. Bu skript, ``build/build.mk`` dosyasını çağırmaktan daha fazlasını yapar.
 
-The main job of these makefiles is to run ``autoconf`` to generate the ``./configure`` script and ``autoheader`` to
-generate the ``main/php_config.h.in`` template. The latter file will be used by configure to generate the final
-configuration header file ``main/php_config.h``.
+Bu makefile dosyalarının asıl görevi ``autoconf``'u ``./configure`` ve ``autoheader``skriptlerini üretmesi için çağırmaktır. Bu çağrıdan sonra da
+``main/php_config.h.in`` şablonu oluşur.
 
-Both utilities produce their results from the ``configure.in`` file (which specifies most of the PHP build process),
-the ``acinclude.m4`` file (which specifies a large number of PHP-specific M4 macros) and the ``config.m4`` files of
-individual extensions and SAPIs (as well as a bunch of other ``m4`` files).
+Son bahsedilen dosya, yapılandırma başlık dosyası `` main / php_config.h``'ı oluşturmak için  kullanılacaktır.
 
-The good news is that writing extensions or even doing core modifications will not require much interaction with the
-build system. You will have to write small ``config.m4`` files later on, but those usually just use two or three of the
-high-level macros that ``acinclude.m4`` provides. As such we will not go into further detail here.
+Her iki program da kendi sonuçlarını `` configure.in`` dosyasından (PHP yapılandırma sürecinin çoğunu kapsayan)
+üretir, "acinclude.m4" (çok sayıda PHP'ye özgü M4 makroları) ve "config.m4" dosyaları, bireysel uzantılar ve SAPIler
+(çok sayıda ``m4`` dosyası) dosyaları.
 
-The ``./buildconf`` script only has two options: ``--debug`` will disable warning suppression when calling autoconf and
-autoheader. Unless you want to work on the buildsystem, this option will be of little interest to you.
+İyi haber şu ki, eklenti yazmak veya çekirdekte değişiklikler yapmak, yapı sistemiyle
+çok fazla etkileşim gerektirmeyecek. Sonradan küçük ``config.m4`` dosyaları yazmanız gerekecek fakat bunlar sadece
+birkaç taneden oluşan ``acinclude.m4``'ün sağladığı yüksek-seviye makrolar olacak. Bunun haricinde daha
+fazla ayrıntıya girmeyeceğiz.
+
+``./buildconf`` skripti sadece iki seçeneğe sahip: ``--debug`` seçeneği autoconf ve
+autoheader çağırılırken, uyarı bastırmayı devredışı bırakır. buildsystem üzerinde çalışmadığınız sürece,
+bu seçenek ilginizi çok da çekmeyecektir.
 
 The second option is ``--force``, which will allow running ``./buildconf`` in release packages (e.g. if you downloaded
 the packaged source code and want to generate a new ``./configure``) and additionally clear the configuration caches
