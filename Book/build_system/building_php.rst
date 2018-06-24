@@ -163,12 +163,16 @@ fazla ayrıntıya girmeyeceğiz.
 autoheader çağırılırken, uyarı bastırmayı devredışı bırakır. buildsystem üzerinde çalışmadığınız sürece,
 bu seçenek ilginizi çok da çekmeyecektir.
 
-The second option is ``--force``, which will allow running ``./buildconf`` in release packages (e.g. if you downloaded
-the packaged source code and want to generate a new ``./configure``) and additionally clear the configuration caches
-``config.cache`` and ``autom4te.cache/``.
+İkincisi ise, dağıtım paketlerinde (eğer paketlenmiş bir kaynak kodu indirmiş 
+ve yeni bir ``./configure`` oluşturmakistiyorsanız) ``./buildconf`` çalıştırabilmenizi
+sağlayan ve yapılandırma önbelleği olan ``config.cache`` ve ``autom4te.cache/``'i temizlemeyi sağlayan 
+``--force`` seçeneği.
 
-If you update your git repository using ``git pull`` (or some other command) and get weird errors during the ``make``
-step, this usually means that something in the build configuration changed and you need to run ``./buildconf --force``.
+Eğer git deponuzu(repository) ``git pull`` komutuyla (ya da başka bir komutla) güncellerseniz ve 
+
+If you update your git repository using ``git pull`` (or some other command) and ``make`` işlemi sırasında
+garip hatalar alırsanız, bu yapılandırmanızda bir şeylerin değiştiği ve ``./buildconf --force`` komutunu
+çalıştırmanız gerektiği anlamına gelir.
 
 ``./configure`` skripti
 -----------------------
