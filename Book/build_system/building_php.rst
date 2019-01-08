@@ -231,24 +231,25 @@ Varsayılan bir PHP 5.5 yapılandırması için sonuç şöyle görünecektir:
     xmlreader
     xmlwriter
 
-If you now wanted to stop compiling the CGI SAPI, as well as the tokenizer and sqlite3 extensions and instead enable
-opcache and gmp, the corresponding configure command would be::
+Şimdi, CGI SAPI'nin yanı sıra belirteç(tokenizer) ve sqlite3 uzantılarını derlemeyi durdurmak ve bunun yerine
+opcache ve gmp'yi etkinleştirmek istediğinizde, ilgili yapılandırma komutu::
 
     ~/php-src> ./configure --disable-cgi --disable-tokenizer --without-sqlite3 \
                            --enable-opcache --with-gmp
 
-By default most extensions will be compiled statically, i.e. they will be part of the resulting binary. Only the opcache
-extension is shared by default, i.e. it will generate an ``opcache.so`` shared object in the ``modules/`` directory. You
-can compile other extensions into shared objects as well by writing ``--enable-NAME=shared`` or ``--with-NAME=shared``
-(but not all extensions support this). We'll talk about how to make use of shared extensions in the next section.
+Varsayılan olarak, birçok eklenti statik olarak derlenir, diğer bir deyişle; ortaya çıkan ikili kodun parçası olur.
+Sadece opcache uzantısı varsayılan olarak paylaşılır, yani; ``modules/`` klasörü içerisinde ``opcache.so`` paylaşımlı
+objesi oluşturulur. ``--enable-NAME=shared`` ya da ``--with-NAME=shared`` yazarak, diğer uzantıların da birer paylaşımlı
+obje olarak derlenmesini sağlayabilirsiniz (fakat her uzantı bunu desteklemez). Bir sonraki bölümde,
+paylaşılan uzantıların nasıl kullanılacağı hakkında konuşacağız.
 
-To find out which switch you need to use and whether an extension is enabled by default, check ``./configure --help``.
-If the switch is either ``--enable-NAME`` or ``--with-NAME`` it means that the extension is not compiled by default and
-needs to be explicitly enabled. ``--disable-NAME`` or ``--without-NAME`` on the other hand indicate an extension that
-is compiled by default, but can be explicitly disabled.
+Hangi anahtarı kullanmanız gerektiğini ve bir uzantının varsayılan olarak etkin olup olmadığını öğrenmek için, 
+``./configure --help`` komutuna bakınız. Eğer anahtar ``--enable-NAME`` ya da ``--with-NAME`` ise, bu uzantının
+varsayılan olarak derlenmediğini ve etkinleştirilmesi gerektiğini belirtir. Diğer bir seçenek olan `--disable-NAME``
+veya ``--without-NAME`` anahtarları, uzantının varsayılan olarak derlendiğini ve devredışı bırakılabileceğini gösterir.
 
-Some extensions are always compiled and can not be disabled. To create a build that only contains the minimal amount of
-extensions use the ``--disable-all`` option::
+Bazı eklentiler daima derlenmiş olarak gelir ve devredışı bırakılamaz. Minimum uzantı içeren bir yapılandırma
+elde etmek için ``--disable-all`` opsiyonu kullanılmalıdır::
 
     ~/php-src> ./configure --disable-all && make -jN
     ~/php-src> sapi/cli/php -m
@@ -261,11 +262,12 @@ extensions use the ``--disable-all`` option::
     SPL
     standard
 
-The ``--disable-all`` option is very useful if you want a fast build and don't need much functionality (e.g. when
-implementing language changes). For the smallest possible build you can additionally specify the ``--disable-cgi``
-switch, so only the CLI binary is generated.
 
-There are two more switches, which you should **always** specify when developing extensions or working on PHP:
+``--disable-all`` opsiyonu, fazla fonksiyonellik barındırmayan ve hızlı bir build istediğinizde çok kullanışlıdır
+(Örneğin: dil değişiklikleri uygulamak istediğinizde). Mümkün olan en küçük yapılandırma için ek olarak 
+``--disable-cgi`` anahtarını belirttiğinizde, sadece CLI ikilisi(binary) oluşturulur.
+
+Eklenti geliştirirken veya PHP üzerinde çalışırken **her zaman** belirtmeniz gereken iki anahtar daha vardır:
 
 ``--enable-debug`` enables debug mode, which has multiple effects: Compilation will run with ``-g`` to generate debug
 symbols and additionally use the lowest optimization level ``-O0``. This will make PHP a lot slower, but make debugging
