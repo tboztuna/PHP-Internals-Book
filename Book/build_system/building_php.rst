@@ -269,47 +269,52 @@ elde etmek için ``--disable-all`` opsiyonu kullanılmalıdır::
 
 Eklenti geliştirirken veya PHP üzerinde çalışırken **her zaman** belirtmeniz gereken iki anahtar daha vardır:
 
-``--enable-debug`` enables debug mode, which has multiple effects: Compilation will run with ``-g`` to generate debug
-symbols and additionally use the lowest optimization level ``-O0``. This will make PHP a lot slower, but make debugging
-with tools like ``gdb`` more predictable. Furthermore debug mode defines the ``ZEND_DEBUG`` macro, which will enable
-various debugging helpers in the engine. Among other things memory leaks, as well as incorrect use of some data
-structures, will be reported.
+``--enable-debug``, birden fazla etkiye sahip olan ayıklama modunu etkinleştirir: Derleme, ayıklama sembollerini
+oluşturmak için ``-g`` parametresiyle çalışır ve en düşük optimizasyon seviyesi olan ``-O0`` kullanılır.
+Bu PHP'nin çok daha fazla yavaş hale getirecek, fakat ``gdb`` gibi araçlarla hata ayıklamayı daha
+öngörülebilir hale getirecek. Ayrıca hata ayıklama modu, motorda(engine) çeşitli hata ayıklama yardımcılarını
+etkinleştirecek olan ``ZEND_DEBUG`` makrosunu tanımlar. Diğer şeylerin yanı sıra hafıza sızıntısı, veri yapılarının
+yanlış kullanımı rapor edilecektir. 
 
-``--enable-maintainer-zts`` enables thread-safety. This switch will define the ``ZTS`` macro, which in turn will enable
-the whole TSRM (thread-safe resource manager) machinery used by PHP. Writing thread-safe extensions for PHP is very
-simple, but only if make sure to enable this switch. Otherwise you're bound to forget a ``TSRMLS_*`` macro somewhere and
-your code won't build in a thread-safe environment.
+``--enable-maintainer-zts`` iş parçacığı güvenliğini(thread-safety) sağlar. Bu anahtar, PHP tarafından kullanılan tüm
+TSRM(İş Parçacığı Güvenli Kaynak Yöneticisi) makinelerini mümkün kılacak olan ``ZTS`` makrosunu tanımlar. PHP için
+güvenli iş parçacığı(thread-safe) uzantıları yazmak basittir, ancak bu anahtarı etkinleştirdiğinizden emin olmalısınız.
+Aksi takdirde bir yerde ``TSRMLS_*`` makrosunu unutmak zorundasınız ve kodunuz iş parçacığı güvenli(thread-safe) bir
+ortamda oluşturulmayacaktır.
 
-On the other hand you should not use either of these options if you want to perform performance benchmarks for your
-code, as both can cause significant and asymmetrical slowdowns.
+Öte yandan, kodunuz için performans ölçümü gerçekleştirmek istiyorsanız bu seçeneklerin ikisini de önemli ve asimetrik
+yavaşlamalara sebep olabileceğinden kullanmamalısınız.
 
-Note that ``--enable-debug`` and ``--enable-maintainer-zts`` change the ABI of the PHP binary, e.g. by adding additional
-arguments to many functions. As such shared extensions compiled in debug mode will not be compatible with a PHP binary
-built in release mode. Similarly a thread-safe extension is not compatible with a thread-unsafe PHP build.
+``--enable-debug`` ve ``--enable-maintainer-zts`` anahtarlarının PHP ikili(binary) kodunun ABI'ini değiştirdiğine
+dikkat edin, örneğin; birçok fonksiyona ek argümanlar eklemek gibi. Hata ayıklama modunda derlenen paylaşılan uzantılar
+PHP ikilisi(binary) ile uyumlu olmayacağından serbest bırakma modunda(release mode) yerleşiktir. Benzer şekilde,
+iş parçacığı güvenli(thread-safe) bir uzantı iş parçacığı güvensiz(thread-unsafe) bir PHP yapılandırması ile
+uyumlu değildir.
 
-Due to the ABI incompatibility ``make install`` (and PECL install) will put shared extensions in different directories
-depending on these options:
+ABI uyumsuzluğu nedeniyle ``make install`` (ve PECL install) komutu paylaşımlı eklentilerini aşağıdaki seçeneklere
+bağlı olarak farklı dizinlere koyacağız:
 
-* ``$PREFIX/lib/php/extensions/no-debug-non-zts-API_NO`` for release builds without ZTS
-* ``$PREFIX/lib/php/extensions/debug-non-zts-API_NO`` for debug builds without ZTS
-* ``$PREFIX/lib/php/extensions/no-debug-zts-API_NO`` for release builds with ZTS
-* ``$PREFIX/lib/php/extensions/debug-zts-API_NO`` for debug builds with ZTS
+* ``$PREFIX/lib/php/extensions/no-debug-non-zts-API_NO`` ZTS içermeyen serbest bırakma sürümleri için(release builds)
+* ``$PREFIX/lib/php/extensions/debug-non-zts-API_NO`` ZTS içermeyen hata ayıklama sürümleri için(debug builds)
+* ``$PREFIX/lib/php/extensions/no-debug-zts-API_NO`` ZTS içeren serbest bırakma sürümleri için(release builds)
+* ``$PREFIX/lib/php/extensions/debug-zts-API_NO`` ZTS içeren hata ayıklama sürümleri için(debug builds)
 
-The ``API_NO`` placeholder above refers to the ``ZEND_MODULE_API_NO`` and is just a date like ``20100525``, which is
-used for internal API versioning.
+Yukarıdaki ``API_NO`` yer tutucusu(placeholder) ``ZEND_MODULE_API_NO``'ya karşılık gelir ve bu, ``20100525`` gibi bir
+tarihtir, dahili API sürümlemesi için kullanılır.
 
-For most purposes the configuration switches described above should be sufficient, but of course ``./configure``
-provides many more options, which you'll find described in the help.
+Çoğu amaç için yukarıdaki açıklanan yapılandırma anahtarları yeterli olur, ancak elbette ``./configure`` yardım
+kısmında açıklandığı gibi birçok seçenek sunar.
 
-Apart from passing options to configure, you can also specify a number of environment variables. Some of the more
-important ones are documented at the end of the configure help output (``./configure --help | tail -25``).
+Yapılandırılacak seçeneklerin yanı sıra, bir dizi ortam değişkeni de belirleyebilirsiniz. En önemlilerinden bazıları,
+'yapılandır' (configure) yardım çıktısının (``./configure --help | tail -25``) sonunda belirtilmiştir.
 
-For example you can use ``CC`` to use a different compiler and ``CFLAGS`` to change the used compilation flags::
+Örneğin, farklı bir derleyici kullanmak için ``CC`` ve kullanılmış derleme bayraklarını değiştirmek için ``CFLAGS``
+kullanabilirsiniz::
 
     ~/php-src> ./configure --disable-all CC=clang CFLAGS="-O3 -march=native"
 
-In this configuration the build will make use of clang (instead of gcc) and use a very high optimization level
-(``-O3 -march=native``).
+Bu yapılandırmada, derleme clang (gcc yerine) kullanacak ve çok yüksek bir optimizasyon seviyesi
+kullanacaktır (``-O3 -march=native``).
 
 ``make`` ve ``make install``
 ----------------------------
