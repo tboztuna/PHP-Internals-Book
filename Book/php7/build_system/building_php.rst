@@ -133,7 +133,7 @@ development.
 
 Now lets take a closer look at the individual build steps!
 
-``./buildconf`` skripti
+``./buildconf`` betiği
 --------------------------
 
 If you are building from the git repository, the first thing you'll have to do is run the ``./buildconf`` script. This
@@ -161,7 +161,7 @@ the packaged source code and want to generate a new ``./configure``) and additio
 If you update your git repository using ``git pull`` (or some other command) and get weird errors during the ``make``
 step, this usually means that something in the build configuration changed and you need to run ``./buildconf --force``.
 
-``./configure`` skripti
+``./configure`` betiği
 --------------------------
 
 Once the ``./configure`` script is generated you can make use of it to customize your PHP build. You can list all
