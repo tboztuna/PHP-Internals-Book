@@ -507,37 +507,38 @@ test hatalarına karşı nasıl bir hata ayıklama yapacağınız hakkında bilg
 Derleme problemlerini gidermek ve ``make clean`` komutu
 -------------------------------------------------------
 
-As you may know ``make`` performs an incremental build, i.e. it will not recompile all files, but only those ``.c``
-files that changed since the last invocation. This is a great way to shorten build times, but it doesn't always work
-well: For example, if you modify a structure in a header file, ``make`` will not automatically recompile all ``.c``
-files making use of that header, thus leading to a broken build.
+Bildiğiniz gibi, ``make`` artıklı bir derleme yapar, yani tüm dosyaları yeniden derlemez, ancak son çağrılmasından bu
+yana değişen ``.c`` dosyalarını derler. Bu derleme zamanını kısaltmak için harika bir yoldur, ancak her zaman iyi sonuç
+vermez: Örneğin, bir başlık dosyasındaki herhangi bir yapıyı değiştirirseniz, ``make``, tüm ``.c`` dosyalarının
+yapımını otomatik olarak derlemez, böylece kırık bir yapıya yol açar.
 
-If you get odd errors while running ``make`` or the resulting binary is broken (e.g. if ``make test`` crashes it before
-it gets to run the first test), you should try to run ``make clean``. This will delete all compiled objects, thus
-forcing the next ``make`` call to perform a full build.
+Eğer ``make``'i çalıştırırken garip hatalar alırsanız ya da sonuç olarak ortaya çıkan ikili sistem bozulursa (örneğin 
+``make test``, ilk testi çalıştırmadan önce çökerse), ``make clean`` komutunu kullanmalısınız. Bu, derlenmiş tüm
+nesneleri siler, böylece bir sonraki ``make`` çağrısını tam derleme yapmaya zorlar.
 
-Sometimes you also need to run ``make clean`` after changing ``./configure`` options. If you only enable additional
-extensions an incremental build should be safe, but changing other options may require a full rebuild.
+Bazen, ``./configure`` seçeneklerini değiştirdikten sonra ``make clean`` komutunu çalıştırmanız da gerekebilir.
+Yalnızca ek uzantıları etkinleştirirseniz, artımlı bir yapı güvenli olmalıdır, ancak diğer seçenekleri değiştirmek tam
+bir yeniden oluşturma gerektirebilir.
 
-A more aggressive cleaning target is available via ``make distclean``. This will perform a normal clean, but also roll
-back any files brought by the ``./configure`` command invocation. It will delete configure caches, Makefiles,
-configuration headers and various other files. As the name implies this target "cleans for distribution", so it is
-mostly used by release managers.
+Daha agresif bir temizlik ``make distclean`` komutuyla mümkündür. Bu normal bir temizleme gerçekleştirecek, ancak
+``./configure`` komut çağrısı ile getirilen dosyaları da geri alacaktır. Yapılandırma önbelleklerini, Makefiles,
+yapılandırma başlıkları ve diğer çeşitli dosyaları siler. Adından da belli olduğu gibi "dağıtımı temizler", bu nedenle
+çoğunlukla yayın yöneticileri tarafından kullanılır.
 
-Another source of compilation issues is the modification of ``config.m4`` files or other files that are part of the PHP
-build system. If such a file is changed, it is necessary to rerun the ``./buildconf`` script. If you do the modification
-yourself, you will likely remember to run the command, but if it happens as part of a ``git pull`` (or some other
-updating command) the issue might not be so obvious.
+Derleme sorunlarının bir başka kaynağı da ``config.m4`` dosyalarının veya PHP derleme sisteminin bir parçası olan diğer
+dosyaların değiştirilmesidir. Eğer böyle bir dosya değişirse, ``./buildconf`` betiğini yeniden çalıştırmak gerekir.
+Değişikliği kendiniz yaparsanız, muhtemelen komutu çalıştırmayı hatırlayacaksınız, ancak bir `` git pull`` (ya da başka
+bir güncelleme komutunun) parçası olarak gerçekleşirse, komutu çalıştırmayı hatırlamanız zor olabilir.
 
-If you encounter any odd compilation problems that are not resolved by ``make clean``, chances are that running
-``./buildconf --force`` will fix the issue. To avoid typing out the previous ``./configure`` options afterwards, you
-can make use of the ``./config.nice`` script (which contains your last ``./configure`` call)::
+Eğer ``make clean`` ile çözülmeyen herhangi bir garip derleme problemiyle karşılaşırsanız, muhtemelen bu sorunu çözmek
+için ``./buildconf --force`` size bir şans verecektir. Önceki ``./configure`` seçeneklerini sonradan yazmaktan kaçınmak
+için ``./config.nice``  betiğini kullanabilirsiniz (son ``./configure`` çağrınızı içerir)::
 
     ~/php-src> make clean
     ~/php-src> ./buildconf --force
     ~/php-src> ./config.nice
     ~/php-src> make -jN
 
-One last cleaning script that PHP provides is ``./vcsclean``. This will only work if you checked out the source code
-from git. It effectively boils down to a call to ``git clean -X -f -d``, which will remove all untracked files and
-directories that are ignored by git. You should use this with care.
+Son olarak, PHP'nin sağladığı bir diğer temizlik betiği ``./vcsclean``'dir. Bu betik kaynak kodunu git'ten alırsanız
+çalışacaktır. Git tarafından görmezden gelinen tüm izsiz dosyaları ve dizinleri ``git clean -X -f -d`` komutuyla
+kaldırır. Bu yüzden dikkatli kullanmalısınız.
