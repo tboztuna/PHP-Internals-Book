@@ -57,8 +57,8 @@ PHP'yi yapılandırmadan önce, kaynak kodunu edinmeniz gerekmektedir. Kodu edin
 `Github`_ ikiz bağlantısından) edinebilirsiniz.
 
 Yukarıdaki her iki durum için yapılandırma işlemi farklı olarak gerçekleşiyor: Git reposundaki arşiv bir ``configure`` 
-skripti içermiyor. Bundan dolayı, aslında ``autoconf``'u kullanan ``buildconf`` skriptini kullanarak, bir ``configure`` 
-skripti oluşturmanız gerekecek. Ek olarak, git reposu önceden oluşturulmuş bir ayrıştırıcı içermiyor, bu eksikliğin
+betiği içermiyor. Bundan dolayı, aslında ``autoconf``'u kullanan ``buildconf`` betiğini kullanarak, bir ``configure`` 
+betiği oluşturmanız gerekecek. Ek olarak, git reposu önceden oluşturulmuş bir ayrıştırıcı içermiyor, bu eksikliğin
 giderilmesi için bilgisayarınızda bison'un yüklü olması gerekiyor.
 
 PHP kaynak kodunu git üzerinden edinmenizi tavsiye ediyoruz, bu yöntem ile kurulumunuz en güncel halde kalacak ve
@@ -85,7 +85,7 @@ ilk üçü yüklü olarak gelecektir):
 * ``gcc`` veya başka bir derleyici paketi.
 * ``libc-dev``, başlıkları ve C standart kütüphanesini içerir.
 * ``make``, PHP'nin kullandığı kurulum aracı.
-* ``autoconf`` (2.59 ya da üzeri), ``configure`` skriptini oluşturmak için kullanılır.
+* ``autoconf`` (2.59 ya da üzeri), ``configure`` betiğini oluşturmak için kullanılır.
 * ``automake`` (1.4 ya da üzeri), ``Makefile.in`` dosyalarını oluşturur.
 * ``libtool``, paylaşımlı kütüphaneleri yönetmeye yardımcı olur.
 * ``bison`` (2.4 ya da üzeri), PHP ayrıştırıcısını oluşturmak için kullanılır.
@@ -139,13 +139,13 @@ kullanacaksanız sizin için uygun olabilir.
 
 Şimdi bireysel kurulum aşamalarına daha yakından bakalım!
 
-``./buildconf`` skripti
+``./buildconf`` betiği
 -----------------------
 
-Eğer yapılandırma işlemine git reposundan başladıysanız, ilk önce ``./buildconf`` skriptini çalıştırmanız
-gerekmektedir. Bu skript, ``build/build.mk`` dosyasını çağırmaktan daha fazlasını yapar.
+Eğer yapılandırma işlemine git reposundan başladıysanız, ilk önce ``./buildconf`` betiğini çalıştırmanız
+gerekmektedir. Bu betik, ``build/build.mk`` dosyasını çağırmaktan daha fazlasını yapar.
 
-Bu makefile dosyalarının asıl görevi ``autoconf``'u ``./configure`` ve ``autoheader``skriptlerini üretmesi için çağırmaktır. Bu çağrıdan sonra da
+Bu makefile dosyalarının asıl görevi ``autoconf``'u ``./configure`` ve ``autoheader``betiklerini üretmesi için çağırmaktır. Bu çağrıdan sonra da
 ``main/php_config.h.in`` şablonu oluşur.
 
 Son bahsedilen dosya, yapılandırma başlık dosyası `` main / php_config.h``'ı oluşturmak için  kullanılacaktır.
@@ -159,7 +159,7 @@ Her iki program da kendi sonuçlarını `` configure.in`` dosyasından (PHP yap�
 birkaç taneden oluşan ``acinclude.m4``'ün sağladığı yüksek-seviye makrolar olacak. Bunun haricinde daha
 fazla ayrıntıya girmeyeceğiz.
 
-``./buildconf`` skripti sadece iki seçeneğe sahip: ``--debug`` seçeneği autoconf ve
+``./buildconf`` betiği sadece iki seçeneğe sahip: ``--debug`` seçeneği autoconf ve
 autoheader çağırılırken, uyarı bastırmayı devredışı bırakır. buildsystem üzerinde çalışmadığınız sürece,
 bu seçenek ilginizi çok da çekmeyecektir.
 
@@ -174,10 +174,10 @@ If you update your git repository using ``git pull`` (or some other command) and
 garip hatalar alırsanız, bu yapılandırmanızda bir şeylerin değiştiği ve ``./buildconf --force`` komutunu
 çalıştırmanız gerektiği anlamına gelir.
 
-``./configure`` skripti
+``./configure`` betiği
 -----------------------
 
-``./configure`` skripti bir kere oluşturulduktan sonra PHP yapınızı özelleştirmek için kullanabilirsiniz.
+``./configure`` betiği bir kere oluşturulduktan sonra PHP yapınızı özelleştirmek için kullanabilirsiniz.
 ``--help`` yazarak tüm desteklenen komutları görüntüleyebilirsiniz::
 
     ~/php-src> ./configure --help | less
@@ -319,19 +319,19 @@ kullanacaktır (``-O3 -march=native``).
 ``make`` ve ``make install``
 ----------------------------
 
-After everything is configured, you can use ``make`` to perform the actual compilation::
+Her şey ayarlandıktan sonra, gerçek derlemeyi gerçekleştirmek için ``make`` komutunu kullanabilirsiniz::
 
-    ~/php-src> make -jN    # where N is the number of cores
+    ~/php-src> make -jN    # N, çekirdeklerin sayısıdır
 
-The main result of this operation will be PHP binaries for the enabled SAPIs (by default ``sapi/cli/php`` and
-``sapi/cgi/php-cgi``), as well as shared extensions in the ``modules/`` directory.
+Bu işlemin ana sonucu, etkin SAPI'ler için (varsayılan olarak ``sapi/cli/php`` ve ``sapi/cgi/php-cgi``)
+PHP ikilisinin(binary) yanısıra, ``modules/`` dizinindeki paylaşımlı uzantılar olacaktır.
 
-Now you can run ``make install`` to install PHP into ``/usr/local`` (default) or whatever directory you specified using
-the ``--prefix`` configure switch.
+Şimdi PHP'yi ``/usr/local``(varsayılan) dizine yüklemek için ``make install`` komutunu çalıştırabilirsiniz ya da
+farklı bir dizine yüklemek istiyorsanız, ``--prefix`` anahtarını kullanarak bu işlemi gerçekleştirebilirsiniz.
 
-``make install`` will do little more than copy a number of files to the new location. Unless you specified
-``--without-pear`` during configuration, it will also download and install PEAR. Here is the resulting tree of a default
-PHP build:
+``make install`` yeni lokasyona dosya kopyalama işleminden çok daha fazlasını yapar. Yapılandırma sırasında
+``--without-pear`` anahtarını belirtmediyseniz, PEAR da indirilip yüklenecektir. Aşağıda varsayılan PHP derlemesinin
+sonuç ağacını bulabilirsiniz:
 
 .. code-block:: none
 
@@ -379,19 +379,19 @@ PHP build:
         `-- man
             `-- man1/
 
-A short overview of the directory structure:
+Dizin yapısına kısa bir genel bakış:
 
-* *bin/* contains the SAPI binaries (``php`` and ``php-cgi``), as well as the ``phpize`` and ``php-config`` scripts.
-  It is also home to the various PEAR/PECL scripts.
-* *etc/* contains configuration. Note that the default *php.ini* directory is **not** here.
-* *include/php* contains header files, which are needed to build additional extensions or embed PHP in custom software.
-* *lib/php* contains PEAR files. The *lib/php/build* directory includes files necessary for building extensions, e.g.
-  the ``acinclude.m4`` file containing PHP's M4 macros. If we had compiled any shared extensions those files would live
-  in a subdirectory of *lib/php/extensions*.
-* *php/man* obviously contains man pages for the ``php`` command.
+* *bin/*, SAPI ikili(binary) dosyalarını(``php`` and ``php-cgi``) ve ``phpize`` and ``php-config`` betiklerini içerir.
+  Ayrıca çeşitli PEAR / PECL scriptlerine de ev sahipliği yapmaktadır.
+* *etc/*, konfigürasyonları barındırır. Varsayılan *php.ini* dizininin burada **olmadığını** unutmayalım.
+* *include/php*, ek uzantılar oluşturmak veya PHP'yi özel yazılıma yerleştirmek için gereken başlık dosyalarını içerir.
+* *lib/php*, PEAR dosyalarını içerir. *lib/php/build* dizini, uzantı yapılandırmak için gerekli dosyaları içerir,
+  örneğin: PHP'nin M4 makrolarını içeren ``acinclude.m4`` dosyası. Herhangi bir paylaşılan uzantıyı derlemiş olsaydık,
+  bu dosyalar *lib/php/extensions* dizini altında yaşardı.
+* *php/man* açıkça, ``php`` komutu için kılavuz sayfalarını içerir.
 
-As already mentioned, the default *php.ini* location is not *etc/*. You can display the location using the ``--ini``
-option of the PHP binary:
+Daha önce de belirtildiği gibi, varsayılan *php.ini* lokasyonu *etc/* değildir. Gerçek lokasyonu, PHP ikilisine(binary)
+``--ini`` anahtarını göndererek öğrenebilirsiniz:
 
 .. code-block:: none
 
@@ -401,11 +401,13 @@ option of the PHP binary:
     Scan for additional .ini files in: (none)
     Additional .ini files parsed:      (none)
 
-As you can see the default *php.ini* directory is ``$PREFIX/lib`` (libdir) rather than ``$PREFIX/etc`` (sysconfdir). You
-can adjust the default *php.ini* location using the ``--with-config-file-path=PATH`` configure option.
+Gördüğünüz üzere, varsayılan *php.ini* dizini ``$PREFIX/etc``(sysconfdir)'den ziyade ``$PREFIX/lib``(libdir) olarak
+gözüküyor. ``--with-config-file-path=PATH`` konfigürasyon seçeneğini kullanarak varsayılan *php.ini* konumunu
+ayarlayabilirsiniz.
 
-Also note that ``make install`` will not create an ini file. If you want to make use of a *php.ini* file it is your
-responsibility to create one. For example you could copy the default development configuration:
+Ayrıca, ``make install`` komutunun ini dosyası oluşturmayacağını unutmayın. *php.ini* dosyasından yararlanmak
+istiyorsanız, oluşturmak sizin sorumluluğunuzdadır. Örneğin, varsayılan geliştirme yapılandırmasından
+kopyalayabilirsiniz:
 
 .. code-block:: none
 
@@ -416,12 +418,13 @@ responsibility to create one. For example you could copy the default development
     Scan for additional .ini files in: (none)
     Additional .ini files parsed:      (none)
 
-Apart from the PHP binaries the *bin/* directory also contains two important scripts: ``phpize`` and ``php-config``.
+PHP ikili(binary) dosyalarından ayrı olarak *bin/* dizini de iki önemli komut betiği içerir: 
+``phpize`` ve ``php-config``.
 
-``phpize`` is the equivalent of ``./buildconf`` for extensions. It will copy various files from *lib/php/build* and
-invoke autoconf/autoheader. You will learn more about this tool in the next section.
+``phpize`` uzantılar için ``./buildconf`` ile eşdeğerdir. *lib/php/build* dizininden çeşitli dosyalar kopyalar ve
+autoconf/autoheader'ı çağırır. Bir sonraki bölümde, bu araçlar hakkında daha fazla bilgi edineceksiniz.
 
-``php-config`` provides information about the configuration of the PHP build. Try it out:
+``php-config``, PHP derlemesinin yapılandırması hakkında bilgi sağlar. Deneyin:
 
 .. code-block:: none
 
@@ -441,10 +444,11 @@ invoke autoconf/autoheader. You will learn more about this tool in the next sect
       --version           [5.4.16-dev]
       --vernum            [50416]
 
-The script is similar to the ``pkg-config`` script used by linux distributions. It is invoked during the extension
-build process to obtain information about compiler options and paths. You can also use it to quickly get information
-about your build, e.g. your configure options or the default extension directory. This information is also provided by
-``./php -i`` (phpinfo), but ``php-config`` provides it in a simpler form (which can be easily used by automated tools).
+Bu betik, linux dağıtımları tarafından kullanılan ``pkg-config`` betiğine benzer. Derleyici seçenekleri ve yolları
+hakkında bilgi edinmek için uzantı oluşturma işlemi sırasında çağrılır. Ayrıca, derlemeniz hakkında hızlı bir şekilde
+bilgi edinmek için de kullanabilirsiniz, örneğin: yapılandırma seçeneklerinizi veya varsayılan uzantı dizini. Bu bilgi
+``./php -i`` (phpinfo) tarafından da sağlanmıştır, ancak ``php-config`` daha basit bir biçimde (otomatik araçlar
+tarafından kolayca kullanılabilir) sağlanır.
 
 Test ortamını çalıştırmak
 -------------------------
