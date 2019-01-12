@@ -453,54 +453,56 @@ tarafından kolayca kullanılabilir) sağlanır.
 Test ortamını çalıştırmak
 -------------------------
 
-If the ``make`` command finishes successfully, it will print a message encouraging you to run ``make test``:
+``make`` komutu başarıyla tamamlanırsa ``make test``'i çalıştırmanız için bir mesaj yazdıracaktır:
 
 .. code-block:: none
 
     Build complete.
     Don't forget to run 'make test'
 
-``make test`` will run the PHP CLI binary against our test suite, which is located in the different *tests/* directories
-of the PHP source tree. As a default build is run against approximately 9000 tests (less for a minimal build, more if
-you enable additional extensions) this can take several minutes. The ``make test`` command is currently not parallel, so
-specifying the ``-jN`` option will not make it faster.
+``make test`` PHP kaynak ağacının farklı *test/* dizinlerinde bulunan test takımımıza karşı PHP CLI ikili(binary)
+dosyasını çalıştıracaktır. Varsayılan bir derleme yaklaşık 9000 teste karşı çalıştırıldığı için (minimum derleme için
+daha az, ek uzantıları etkinleştirirseniz daha fazla) bu birkaç dakika sürebilir. ``make test`` komutu şu anda paralel
+değildir, bu nedenle ``-jN`` seçeneğini belirlemek daha hızlı hale getirmez.
 
-If this is the first time you compile PHP on your platform, we encourage you to run the test suite. Depending on your
-OS and your build environment you may find bugs in PHP by running the tests. If there are any failures, the script will
-ask whether you want to send a report to our QA platform, which will allow contributors to analyze the failures. Note
-that it is quite normal to have a few failing tests and your build will likely work well as long as you don't see
-dozens of failures.
+PHP'yi platformunuzda ilk kez kullanıyorsanız, test takımını çalıştırmanızı öneririz. İşletim sisteminize ve yapı
+ortamınıza bağlı olarak, testleri çalıştırarak PHP'de hata bulabilirsiniz. Herhangi bir başarısızlık olursa, senaryo,
+QA platformumuza bir rapor göndermek isteyip istemediğinizi soracaktır, bu da katılımcıların başarısızlıkları analiz
+etmesine olanak sağlayacaktır. Birkaç başarısız testin yapılmasının oldukça normal olduğunu ve yapınızın düzinelerce
+hata görmediğiniz sürece muhtemelen işe yarayacağını unutmayın.
 
-The ``make test`` command internally invokes the ``run-tests.php`` file using your CLI binary. You can run
-``sapi/cli/php run-tests.php --help`` to display a list of options this script accepts.
+``make test`` komutu dahili olarak CLI ikili sisteminizi kullanarak ``run-tests.php`` dosyasını çağırır.
+Bu betiğin kabul ettiği seçeneklerin bir listesini görüntülemek için ``sapi/cli/php run-tests.php --help`` komutunu
+çalıştırabilirsiniz.
 
-If you manually run ``run-tests.php`` you need to specify either the ``-p`` or ``-P`` option (or an ugly environment
-variable)::
+Eğer ``run-tests.php``'i elle çalıştırıyorsanız, ``-p`` veya ``-P`` seçeneğini (veya çirkin bir ortam değişkenini)
+belirtmeniz gerekir::
 
     ~/php-src> sapi/cli/php run-tests.php -p `pwd`/sapi/cli/php
     ~/php-src> sapi/cli/php run-tests.php -P
 
-``-p`` is used to explicitly specify a binary to test. Note that in order to run all tests correctly this should be an
-absolute path (or otherwise independent of the directory it is called from). ``-P`` is a shortcut that will use the
-binary that ``run-tests.php`` was called with. In the above example both approaches are the same.
+``-p`` test edilecek bir ikili  dosyayı açıkça belirtmek için kullanılır. Tüm testleri doğru bir şekilde çalıştırmak
+için bunun mutlak bir yol (ya da denilen dizinden bağımsız olarak) olması gerektiğini unutmayın. ``-P``,
+``run-tests.php`` ile çağrılan ikili yodsyayı kullanacak bir kısayoldur.  Yukarıdaki örnekte her iki yaklaşım da
+aynıdır.
 
-Instead of running the whole test suite, you can also limit it to certain directories by passing them as arguments to
-``run-tests.php``. E.g. to test only the Zend engine, the reflection extension and the array functions::
+Test takımının tamamını çalıştırmak yerine, ``run-tests.php``'ye argümanlar şeklinde göndererek belirli dizinlerle
+sınırlayabilirsiniz. Örneğin, sadece Zend motorunu, yansıma uzantısını ve dizi fonksiyonlarını test etmek için:
 
     ~/php-src> sapi/cli/php run-tests.php -P Zend/ ext/reflection/ ext/standard/tests/array/
 
-This is very useful, because it allows you to quickly run only the parts of the test suite that are relevant to your
-changes. E.g. if you are doing language modifications you likely don't care about the extension tests and only want to
-verify that the Zend engine is still working correctly.
+Bu çok kullanışlıdır, çünkü yalnızca test grubunun değişikliklerinizle ilgili kısımlarını hızlıca çalıştırmanıza izin
+verir. Örneğin, dilde değişiklik yapıyorsanız, uzatma testlerini umursamayıp sadece Zend motorunun hala doğru
+çalıştığını doğrulamak istiyorsunuzdur.
 
-You don't need to explicitly use ``run-tests.php`` to pass options or limit directories. Instead you can use the
-``TESTS`` variable to pass additional arguments via ``make test``. E.g. the equivalent of the previous command would
-be::
+Seçenekleri geçmek veya dizinleri sınırlamak için açıkça ``run-tests.php`` kullanmanıza gerek yoktur. Bunun yerine
+``make test`` yoluyla ek argümanlar iletmek için ``TESTS`` değişkenini kullanabilirsiniz. Örneğin bir önceki komutun 
+karşılığı şu şekilde olacaktır::
 
     ~/php-src> make test TESTS="Zend/ ext/reflection/ ext/standard/tests/array/"
 
-We will take a more detailed look at the ``run-tests.php`` system later, in particular also talk about how to write your
-own tests and how to debug test failures.
+``run-tests.php`` sistemini daha sonra detaylı olarak inceleyeceğiz, özellikle kendi testlerinizi nasıl yazacağınız ve
+test hatalarına karşı nasıl bir hata ayıklama yapacağınız hakkında bilgi vereceğiz.
 
 Derleme problemlerini gidermek ve ``make clean`` komutu
 -------------------------------------------------------
