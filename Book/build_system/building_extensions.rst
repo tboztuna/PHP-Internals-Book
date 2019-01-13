@@ -78,41 +78,40 @@ olacaktır; bu, ``extension=apcu.so`` ini 'seçeneğinin kullanılmasıyla yükl
 .. _PECL: http://pecl.php.net
 .. _APCu: http://pecl.php.net/package/APCu
 
-Adding extensions to the PHP source tree
-----------------------------------------
+PHP kaynak ağacına uzantı ekleme
+--------------------------------
 
-There is no fundamental difference between a third-party extension and an extension bundled with PHP. As such you can
-build an external extension simply by copying it into the PHP source tree and then using the usual build procedure.
-We'll demonstrate this using APCu as an example.
+Üçüncü taraf bir uzantı ile PHP ile birlikte gelen bir uzantı arasında temel bir fark yoktur. Böylece harici bir
+eklentiyi PHP kaynak ağacına kopyalayarak ve daha sonra normal derleme prosedürünü kullanarak oluşturabilirsiniz. Bunun
+örneğini APCu'yu kullanarak göstereceğiz.
 
-First of all, you'll have to place the source code of the extension into the ``ext/EXTNAME`` directory of your PHP
-source tree. If the extension is available via git, this is as simple as cloning the repository from within ``ext/``::
+Öncelikle, uzantının kaynak kodunu PHP kaynak ağacınızın ``ext/EXTNAME`` dizinine yerleştirmeniz gerekir. Uzantı git
+üzerinde mevcutsa, bu, depoyu ``ext/`` içinden klonlamak kadar basittir::
 
     ~/php-src/ext> git clone https://github.com/krakjoe/apcu.git
 
-Alternatively you can also download a source tarball and extract it::
+Alternatif olarak, bir kaynak tarball'ı indirebilir ve çıkarabilirsiniz::
 
     /tmp> wget http://pecl.php.net/get/apcu-4.0.2.tgz
     /tmp> tar xzf apcu-4.0.2.tgz
     /tmp> mkdir ~/php-src/ext/apcu
     /tmp> cp -r apcu-4.0.2/. ~/php-src/ext/apcu
 
-The extension will contain a ``config.m4`` file, which specifies extension-specific build instructions for use by
-autoconf. To incorporate them into the ``./configure`` script, you'll have to run ``./buildconf`` again. To ensure that
-the configure file is really regenerated, it is recommended to delete it beforehand::
+Uzantı, autoconf tarafından kullanılacak uzantıya özgü derleme talimatlarını belirten bir ``config.m4`` dosyası
+içerecektir. Onları ``./configure``  betiğine dahil etmek için yeniden ``./buildconf``'u çalıştırmanız gerekir.
+Konfigürasyon dosyasının gerçekten yenilenmesini sağlamak için, önceden silmeniz önerilir::
 
     ~/php-src> rm configure && ./buildconf --force
 
-You can now use the ``./config.nice`` script to add APCu to your existing configuration or start over with a completely
-new configure line::
+Şimdi mevcut yapılandırmanıza APCu eklemek için ``./config.nice`` komut dosyasını kullanabilir veya tamamen yeni bir yapılandırma satırıyla başlayabilirsiniz::
 
     ~/php-src> ./config.nice --enable-apcu
     # or
     ~/php-src> ./configure --enable-apcu # --other-options
 
-Finally run ``make -jN`` to perform the actual build. As we didn't use ``--enable-apcu=shared`` the extension is
-statically linked into the PHP binary, i.e. no additional actions are needed to make use of it. Obviously you can also
-use ``make install`` to install the resulting binaries.
+Sonunda asıl yapıyı oluşturmak için ``make -jN`` komutunu çalıştırın. ``--enable-apcu=shared`` anahtarını
+kullanmadığımız için, uzantı statik olarak PHP ikilisi ile bağlantılıdır, yani kullanımı için ek bir işlem yapmanıza
+gerek yoktur. Ortaya çıkan ikili dosyaları yüklemek için ``make install`` komutunu da kullanabilirsiniz.
 
 Building extensions using ``phpize``
 ------------------------------------
