@@ -103,7 +103,8 @@ Konfigürasyon dosyasının gerçekten yenilenmesini sağlamak için, önceden s
 
     ~/php-src> rm configure && ./buildconf --force
 
-Şimdi mevcut yapılandırmanıza APCu eklemek için ``./config.nice`` komut dosyasını kullanabilir veya tamamen yeni bir yapılandırma satırıyla başlayabilirsiniz::
+Şimdi mevcut yapılandırmanıza APCu eklemek için ``./config.nice`` komut dosyasını kullanabilir veya tamamen yeni bir
+yapılandırma satırıyla başlayabilirsiniz::
 
     ~/php-src> ./config.nice --enable-apcu
     # or
