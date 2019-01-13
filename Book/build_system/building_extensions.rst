@@ -55,25 +55,25 @@ yeniden oluşturmadan eklentiyi güncelleyebilmenizdir.
        uzantılarının daha "düşük seviye" (örneğin opcache veya xdebug) olduğunu bilmek ve Zend Engine'in kendi
        çalışmalarına bağlanmak yeterli gelecektir.
 
-Installing extensions from PECL
--------------------------------
+PECL'den uzantı yükleme
+-----------------------
 
-PECL_, the *PHP Extension Community Library*, offers a large number of extensions for PHP. When extensions are removed
-from the main PHP distribution, they usually continue to exist in PECL. Similarly many extensions that are now bundled
-with PHP were previously PECL extensions.
+PECL_, *PHP Extension Community Library*, PHP için çok sayıda uzantı sunar. Uzantılar ana PHP dağıtımından
+kaldırıldığında, genellikle PECL'de var olmaya devam ederler. Benzer şekilde, şimdi PHP ile birlikte gelen birçok
+uzantı daha önce PECL uzantılarıydı.
 
-Unless you specified ``--without-pear`` during the configuration stage of your PHP build, ``make install`` will download
-and install PECL as a part of PEAR. You will find the ``pecl`` script in the ``$PREFIX/bin`` directory. Installing
-extensions is now as simple as running ``pecl install EXTNAME``, e.g.::
+PHP derlemenizin konfigürasyon aşamasında ``--without-pear`` anahtarını belirtmediyseniz, ``make install`` PEAR'ın bir
+parçası olarak PECL'yi indirip yükleyecektir. ``pecl`` betiğini ``$PREFIX/bin`` dizininde bulabilirsiniz. Eklentileri
+yüklemek son derece basittir, ``pecl install EXTNAME``, Örneğin::
 
     ~/myphp> bin/pecl install apcu-4.0.2
 
-This command will download, compile and install the APCu_ extension. The result will be a ``apcu.so`` file in your
-extension directory, which can then be loaded by passing the ``extension=apcu.so`` ini option.
+Bu komut APCu_ uzantısını indirecek, derleyecek ve yükleyecektir. Sonuç, uzantı dizininizde bir  ``apcu.so`` dosyası
+olacaktır; bu, ``extension=apcu.so`` ini 'seçeneğinin kullanılmasıyla yüklenebilir.
 
-While ``pecl install`` is very handy for the end-user, it is of little interest to extension developers. In the
-following, we'll describe two ways to manually build extensions: Either by importing it into the main PHP source tree
-(this allows static linkage) or by doing an external build (only shared).
+ ``pecl install``, son kullanıcılar için çok kullanışlı olsa da, eklenti geliştiricilerinin ilgisini çekmiyor. Aşağıda,
+ uzantıları manuel olarak oluşturmanın iki yolunu açıklayacağız: Ya ana PHP kaynak ağacına alarak (bu statik bağlantıya
+ izin verir) ya da harici bir derleme yaparak (yalnızca paylaşılan).
 
 .. _PECL: http://pecl.php.net
 .. _APCu: http://pecl.php.net/package/APCu
