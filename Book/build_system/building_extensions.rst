@@ -1,32 +1,32 @@
 .. highlight:: bash
 
 PHP eklentilerini yapılandırmak
-================================
+===============================
 
-Now that you know how to compile PHP itself, we'll move on to compiling additional extensions. We'll discuss how the
-build process works and what different options are available.
+Artık PHP'nin kendisini nasıl derleyeceğinizi bildiğinize göre, ek uzantıları derlemeye devam edeceğiz. Derleme
+işleminin nasıl çalıştığını ve hangi farklı seçeneklerin mevcut olduğunu tartışacağız.
 
-Loading shared extensions
--------------------------
+Paylaşılan uzantıların yüklenmesi
+---------------------------------
 
-As you already know from the previous section, PHP extensions can be either built statically into the PHP binary, or
-compiled into a shared object (``.so``). Static linkage is the default for most of the bundled extensions, whereas
-shared objects can be created by explicitly passing ``--enable-EXTNAME=shared`` or ``--with-EXTNAME=shared`` to
-``./configure``.
+Önceki bölümden zaten bildiğiniz gibi, PHP uzantıları ya PHP ikili olarak statik olarak oluşturulabilir ya da
+paylaşılan bir nesneye derlenebilir (``.so``). Statik bağlantılama, paketlenmiş uzantıların çoğu için varsayılandır;
+oysa paylaşılan nesneler açıkça ``--enable-EXTNAME=shared`` veya ``--with-EXTNAME=shared`` anahtarları
+``./configure``'a gönderilerek oluşturulabilir.
 
-While static extensions will always be available, shared extensions need to be loaded using the ``extension`` or
-``zend_extension`` ini options [#]_. Both options take either an absolute path to the ``.so`` file or a path relative to
-the ``extension_dir`` setting. (Relative paths for ``zend_extension`` are only available as of PHP 5.5, previously you
-always had to use an absolute path.)
+Statik uzantılar her zaman kullanılabilir olsa da, paylaşılan uzantıların ``extension`` ya da ``zend_extension`` ini
+seçenekleri kullanılarak yüklenmesi gerekir. Her iki seçenek de ``.so`` dosyasına giden mutlak yolu veya
+``extension_dir`` ayarına göre belirtilen bir yolu kullanır. (``zend_extension`` için göreceli(relative) yollar sadece
+PHP 5.5'ten itibaren kullanılabilir, öncesinde mutlak(absolute) yollar kullanmak zorundaydık.)
 
-As an example, consider a PHP build compiled using this configure line::
+Örnek olarak, bu ayar satırı kullanılarak derlenmiş bir PHP yapısını düşünün::
 
     ~/php-src> ./configure --prefix=$HOME/myphp \
                            --enable-debug --enable-maintainer-zts \
                            --enable-opcache --with-gmp=shared
 
-In this case both the opcache extension and GMP extension are compiled into shared objects located in the ``modules/``
-directory. You can load both either by changing the ``extension_dir`` or by passing absolute paths::
+Bu durumda hem opcache hem de GMP eklentileri ``modules/`` dizininde bulunan, paylaşılan nesnelere derlenir. Her
+ikisini de ``extension_dir``'i değiştirerek veya mutlak yolu parametre olarak vererek yükleyebilirsiniz:
 
     ~/php-src> sapi/cli/php -dzend_extension=`pwd`/modules/opcache.so \
                             -dextension=`pwd`/modules/gmp.so
@@ -34,25 +34,26 @@ directory. You can load both either by changing the ``extension_dir`` or by pass
     ~/php-src> sapi/cli/php -dextension_dir=`pwd`/modules \
                             -dzend_extension=opcache.so -dextension=gmp.so
 
-During the ``make install`` step both ``.so`` files will be moved into the extension directory of your PHP installation,
-which you may find using the ``php-config --extension-dir`` command. For the above build options it will be
-``/home/myuser/myphp/lib/php/extensions/no-debug-non-zts-MODULE_API``. This value will also be the default of the
-``extension_dir`` ini option, so you won't have to specify it explicitly and can load the extensions directly::
+``make install`` adımında, her ikisi de ``.so`` dosyaları, PHP kurulumunuzun ``php-config --extension-dir`` komutunu
+kullanarak bulabileceğiniz eklenti dizinine taşınır. Bu dizin, yukarıdaki derleme seçenekleri için
+``/home/myuser/myphp/lib/php/extensions/no-debug-non-zts-MODULE_API`` olacaktır. Bu değer ``extension_dir`` ini
+seçeneğinin de varsayılanı olacaktır, bu nedenle açıkça belirtmeniz gerekmez ve uzantıları doğrudan yükleyebilirsiniz::
 
     ~/myphp> bin/php -dzend_extension=opcache.so -dextension=gmp.so
 
-This leaves us with one question: Which mechanism should you use? Shared objects allow you to have a base PHP binary and
-load additional extensions through the php.ini. Distributions make use of this by providing a bare PHP package and
-distributing the extensions as separate packages. On the other hand, if you are compiling your own PHP binary, you
-likely don't have need for this, because you already know which extensions you need.
+Bu aklımıza şu soruyu getirir: Hangi mekanizmayı kullanmalısın? Paylaşılan nesneler temel bir PHP ikili dosyasına sahip
+olmanıza ve php.ini üzerinden ek uzantılar yüklemenize izin verir. Dağıtımlar bunu, sade bir PHP paketi sağlayarak ve
+uzantıları ayrı paketler olarak dağıtarak kullanır. Öte yandan, kendi PHP ikili kodunuzu derliyorsanız, buna ihtiyaç
+duymazsınız, çünkü hangi uzantılara ihtiyacınız olduğunu zaten biliyorsunuz.
 
-As a rule of thumb, you'll use static linkage for the extensions bundled by PHP itself and use shared extensions for
-everything else. The reason is simply that building external extensions as shared objects is easier (or at least less
-intrusive), as you will see in a moment. Another benefit is that you can update the extension without rebuilding PHP.
+Genel bir kural olarak, PHP'nin kendisi tarafından paketlenen uzantılar için statik bağlantı kullanacak ve diğer
+her şey için paylaşılan uzantıları kullanacaksınız. Bunun nedeni, gördüğünüz gibi, harici uzantıları paylaşılan
+nesneler olarak oluşturmanın daha kolay (veya en azından daha az müdahaleci) olmasıdır. Diğer bir avantaj ise, PHP'yi
+yeniden oluşturmadan eklentiyi güncelleyebilmenizdir.
 
-.. [#] We'll explain the difference between a "normal" extension and a Zend extension later in the book. For now it
-       suffices to know that Zend extensions are more "low level" (e.g. opcache or xdebug) and hook into the workings of
-       the Zend Engine itself.
+.. [#] Kitapta daha sonra "normal" bir uzantı ile Zend uzantısı arasındaki farktan bahsedeceğiz. Şimdilik, Zend
+       uzantılarının daha "düşük seviye" (örneğin opcache veya xdebug) olduğunu bilmek ve Zend Engine'in kendi
+       çalışmalarına bağlanmak yeterli gelecektir.
 
 Installing extensions from PECL
 -------------------------------
