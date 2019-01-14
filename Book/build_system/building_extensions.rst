@@ -150,17 +150,18 @@ başarısız olursa, uzantının tamamını yeniden oluşturmaya zorlamanıza iz
 komutu üzerinden bir temizlik seçeneği sunar. Bu, ``phpize`` ile içeri alınan tüm dosyaları ve ``/configure`` betiği
 ile oluşturulan dosyaları kaldıracaktır.
 
-Displaying information about extensions
----------------------------------------
+Uzantılarla ilgili bilgileri görüntüleme
+----------------------------------------
 
-The PHP CLI binary provides several options to display information about extensions. You already know ``-m``, which will
-list all loaded extensions. You can use it to verify that an extension was loaded correctly::
+PHP CLI ikilisi(binary), uzantılar hakkında bilgi görüntülemek için çeşitli seçenekler sunar. Yüklü tüm uzantıları
+listeleyecek olan ``-m`` parametresini zaten biliyorsunuz. Bunu aynı zamanda bir uzantının doğru yüklendiğini
+doğrulamak için de kullanabilirsiniz::
 
     ~/myphp/bin> ./php -dextension=apcu.so -m | grep apcu
     apcu
 
-There are several further switches beginning with ``--r`` that expose Reflection functionality. For example you can use
-``--ri`` to display the configuration of an extension::
+Reflection işlevini ortaya çıkaran ``--r`` ile başlayan birkaç anahtar daha var. Örneğin, bir uzantı yapılandırmasını
+görüntülemek için ``--ri`` kullanabilirsiniz::
 
     ~/myphp/bin> ./php -dextension=apcu.so --ri apcu
     apcu
@@ -183,7 +184,7 @@ There are several further switches beginning with ``--r`` that expose Reflection
     apc.ttl => 0 => 0
     # ...
 
-The ``--re`` switch lists all ini settings, constants, functions and classes added by an extension:
+``--re`` anahtarı, bir uzantı tarafından eklenen tüm dahili ayarları, sabitleri, işlevleri ve sınıfları listeler:
 
 .. code-block:: none
 
@@ -215,16 +216,15 @@ The ``--re`` switch lists all ini settings, constants, functions and classes add
       }
     }
 
-The ``--re`` switch only works for normal extensions, Zend extensions use ``--rz`` instead. You can try this on
-opcache::
+``--re`` anahtarı yalnızca normal uzantılar için çalışır, Zend uzantıları için bunun yerine ``--rz`` kullanılır. Bunu
+opcache'de deneyebilirsiniz::
 
     ~/myphp/bin> ./php -dzend_extension=opcache.so --rz "Zend OPcache"
     Zend Extension [ Zend OPcache 7.0.3-dev Copyright (c) 1999-2013 by Zend Technologies <http://www.zend.com/> ]
 
-As you can see, this doesn't display any useful information. The reason is that opcache registers both a normal
-extension and a Zend extension, where the former contains all ini settings, constants and functions. So in this
-particular case you still need to use ``--re``. Other Zend extensions make their information available via ``--rz``
-though.
+Gördüğünüz gibi, bu herhangi bir faydalı bilgi göstermiyor. Bunun nedeni, opcache’in hem normal bir uzantıyı hem de
+Zend uzantısını kaydetmesidir; burada, önceki tüm ini ayarları, sabitleri ve işlevleri içerir. Yani bu özel durumda
+hala ``--re`` kullanmanız gerekir. Diğer Zend uzantıları, bilgilerini ``--rz`` yoluyla da sağlar.
 
 ..
     nikic: Commented out for now. building_php.rst already mentions ABI incompatibility for zts / debug / api version.
