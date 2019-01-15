@@ -1,10 +1,10 @@
 Özel nesne depolama
-=====================
+===================
 
-The previous section laid the ground for the creation of simple internal classes. Most of the features described there
-should be fairly straightforward because they work the same way as in userland PHP, only expressed more verbosely. This
-section on the other hand will go into realms not available to userland classes: The creation and access of custom
-object storage.
+Önceki bölüm, basit iç sınıfların oluşturulması için zemin hazırladı. Burada açıklanan özelliklerin çoğu oldukça basit
+olmalıdır, çünkü kullanıcı tarafındaki PHP'de olduğu gibi çalışırlar, sadece daha ayrıntılı olarak ifade edilirler. Öte
+yandan, bu bölüm, kullanıcı tarafındaki sınıflarda mevcut olmayan alanlara girecektir: Özel nesne depolamasının
+oluşturulması ve erişilmesi.
 
 How are objects created?
 ------------------------
