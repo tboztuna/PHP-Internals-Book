@@ -6,40 +6,39 @@ olmalıdır, çünkü kullanıcı tarafındaki PHP'de olduğu gibi çalışırla
 yandan, bu bölüm, kullanıcı tarafındaki sınıflarda mevcut olmayan alanlara girecektir: Özel nesne depolamasının
 oluşturulması ve erişilmesi.
 
-How are objects created?
-------------------------
+Nesneler nasıl oluşturulur?
+---------------------------
 
-As a first step let's look at how object are created in PHP. For this the ``object_and_properties_init`` macro or one of
-its simpler cousins is used::
+İlk adım olarak, nesnenin PHP'de nasıl yaratıldığına bakalım. Bunun için ``object_and_properties_init`` makrosu ya da
+basit kuzenlerinden biri kullanılır ::
 
-    // Create an object of type SomeClass and give it the properties from properties_hashtable
+    // SomeClass türünde bir nesne oluşturun ve özelliklerine properties_hashtable'dan verin
     zval *obj;
     MAKE_STD_ZVAL(obj);
     object_and_properties_init(obj, class_entry_of_SomeClass, properties_hashtable);
 
-    // Create an object of type SomeClass (with the default properties)
+    // SomeClass türünde bir nesne oluşturun (varsayılan özelliklerle)
     zval *obj;
     MAKE_STD_ZVAL(obj);
     object_init_ex(obj, class_entry_of_SomeClass);
     // = object_and_properties_init(obj, class_entry_of_SomeClass, NULL)
 
-    // Create a default object (stdClass)
+    // Varsayılan bir nesne oluşturun (stdClass)
     zval *obj;
     MAKE_STD_ZVAL(obj);
     object_init(obj);
     // = object_init_ex(obj, NULL) = object_and_properties_init(obj, NULL, NULL)
 
-In the last case, i.e. when you are creating an ``stdClass`` object you will probably want to add properties afterwards.
-This usually isn't done with the ``zend_update_property`` functions from the previous chapter, instead the
-``add_property`` macros are used::
+Son durumda, yani bir ``stdClass`` nesnesini oluştururken muhtemelen daha sonra özellikler eklemek isteyeceksiniz. Bu
+genellikle önceki bölümdeki ``zend_update_property`` işlevleri ile yapılmaz, bunun yerine ``add_property`` makroları
+kullanılır::
 
     add_property_long(obj, "id", id);
-    add_property_string(obj, "name", name, 1); // 1 means the string should be copied
+    add_property_string(obj, "name", name, 1); // 1, dizenin kopyalanması gerektiği anlamına gelir
     add_property_bool(obj, "isAdmin", is_admin);
-    // also _null(), _double(), _stringl(), _resource() and _zval()
+    // ayrıca _null(), _double(), _stringl(), _resource() and _zval()
 
-So what actually happens when an object is created? To find out let's look at the ``_object_and_properties_init``
-function::
+Peki, bir nesne oluşturulduğunda gerçekte ne olur? Öğrenmek için ``_object_and_properties_init`` işlevine bakalım::
 
     ZEND_API int _object_and_properties_init(
         zval *arg, zend_class_entry *class_type, HashTable *properties ZEND_FILE_LINE_DC TSRMLS_DC
@@ -72,13 +71,12 @@ function::
         return SUCCESS;
     }
 
-The function basically does three things: First it verifies that the class can actually be instantiated, then it
-resolves the class constants (this is done only on the first instantiation and the details of it aren't important here).
-After that comes the important part: The function checks whether the class has  ``create_object`` handler. If it
-has one it is called, if it hasn't the default ``zend_objects_new`` implementation is used (and additionally the
-properties are initialized).
+İşlev temel olarak üç şey yapar: İlk önce sınıfın gerçek anlamda başlatılabileceğini doğrular, ardından sınıf
+sabitlerini çözer (bu yalnızca ilk başlatmada yapılır ve ayrıntıları burada önemli değildir). Bundan sonra önemli kısım
+gelir: İşlev, sınıfın ``create_object`` işleyicisine sahip olup olmadığını kontrol eder. Eğer bir tanesine sahipse,
+varsayılan ``zend_objects_new`` uygulaması yoksa, kullanılır (ve ayrıca özellikler başlatılır).
 
-Here is what ``zend_objects_new`` then does::
+Sonra, ``zend_objects_new`` aşağıdakileri yapar::
 
     ZEND_API zend_object_value zend_objects_new(
         zend_object **object, zend_class_entry *class_type TSRMLS_DC
@@ -99,8 +97,7 @@ Here is what ``zend_objects_new`` then does::
         return retval;
     }
 
-The above code contains three interesting things. Firstly the ``zend_object`` structure, which is defined as
-follows::
+Yukarıdaki kod üç ilginç şey içeriyor. Öncelikle tanımlandığı gibi, ``zend_object`` yapısı::
 
     typedef struct _zend_object {
         zend_class_entry *ce;
@@ -109,15 +106,15 @@ follows::
         HashTable *guards; /* protects from __get/__set ... recursion */
     } zend_object;
 
-This is the "standard" object structure. It contains the class entry used for creation, a properties hashtable, a
-properties "table" and a hashtable for recursion guarding. What exactly the difference between ``properties`` and
-``properties_table`` is will be covered in a later section of this chapter, at this point you should just know that the
-latter is used for properties declared in the class and the former for properties that weren't declared. How the
-``guards`` mechanism works will also be covered later.
+Bu "standart" nesne yapısıdır. Oluşturma için kullanılan sınıf girdisini, bir hashtable özelliğini, bir "tablo"
+özelliğini ve özyinelemeyi koruma için bir karma tablosunu içerir. ``properties`` ve ``properties_table`` arasındaki
+farkın tam olarak ne olduğu, bu bölümün sonraki bölümlerinde ele alınacaktır; bu noktada, yalnızca ikincisinin sınıfta
+ilan edilen özellikler için kullanıldığını ve ilk olarak ilan edilmeyen özellikler için kullanıldığını bilmelisiniz.
+``guards`` mekanizmasının nasıl işlediği de daha sonra ele alınacaktır.
 
-The ``zend_objects_new`` function allocates the aforementioned standard object structure and initializes it. Afterwards
-it calls ``zend_objects_store_put`` to put the object data into the object store. The object store is nothing more than
-a dynamically resized array of ``zend_object_store_bucket``\s::
+``zend_objects_new`` işlevi yukarıda belirtilen standart nesne yapısını tahsis eder ve başlatır. Daha sonra nesne
+verisini nesne deposuna koymak için ``zend_objects_store_put`` çağırır. Nesne deposu dinamik olarak yeniden
+boyutlandırılmış bir ``zend_object_store_bucket``\s dizisinden başka bir şey değildir::
 
     typedef struct _zend_object_store_bucket {
         zend_bool destructor_called;
@@ -138,15 +135,15 @@ a dynamically resized array of ``zend_object_store_bucket``\s::
         } bucket;
     } zend_object_store_bucket;
 
-The main part here is the ``_store_object`` structure, which contains the stored object in the ``void *object`` member,
-followed by three handlers for destruction, freeing and cloning. There is some additional stuff in this structure too,
-for example it has its own ``refcount`` property, because one object in the object store can be referenced from several
-zvals at the same time and PHP needs to keep track of just how many references there are to be able to free it later.
-Additionally the object ``handlers`` are stored too (this is necessary for destruction) and a GC root buffer (how PHPs
-cycle collector works will be covered in a later chapter).
+Buradaki ana bölüm, ``void *object`` nesnesinin üyesinde saklanan nesneyi içeren ``_store_object`` yapısı ve ardından
+yıkım, serbest bırakma ve klonlama işleyicileridir. Bu yapıda bazı ek şeyler de var, örneğin “refcount”
+özelliğine sahip, çünkü nesne deposundaki bir nesneye aynı anda birkaç zval'dan başvuruda bulunabiliyor ve PHP'nin kaç
+tane izini tutması gerektiği oradaki referanslar tarafından sonradan serbest bırakılabilir. Ek olarak, ``handlers``
+işleyicileri nesnesi de saklanır (bu, imha için gereklidir) ve bir GC kök tamponu (PHP'ler döngü toplayıcısının nasıl
+çalıştığı daha sonraki bir bölümde ele alınacaktır).
 
-Getting back to the ``zend_objects_new`` function, the last thing it does is to set the object ``handlers`` to the
-default ``std_object_handlers``.
+``zend_objects_new`` işlevine geri dönersek, yaptığı en son şey, işleyicileri varsayılan ``std_object_handlers``'a
+ayarlamaktır.
 
 Overriding create_object
 ------------------------
