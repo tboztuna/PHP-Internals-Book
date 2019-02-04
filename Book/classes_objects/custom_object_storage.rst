@@ -145,62 +145,62 @@ işleyicileri nesnesi de saklanır (bu, imha için gereklidir) ve bir GC kök ta
 ``zend_objects_new`` işlevine geri dönersek, yaptığı en son şey, işleyicileri varsayılan ``std_object_handlers``'a
 ayarlamaktır.
 
-Overriding create_object
-------------------------
+create_object öğesini geçersiz kılma
+------------------------------------
 
-When you want to use custom object storage, you will basically repeat the above three steps: First you allocate and
-initialize your object, which will contain the standard object as a substructure. Then you put it into the object store
-along with several handlers. And lastly you assign your object handlers structure.
+Özel nesne depolamayı kullanmak istediğinizde, temel olarak yukarıdaki üç adımı tekrarlayacaksınız: İlk önce, standart
+nesneyi bir altyapı olarak içerecek olan nesneyi ayırır ve başlatırsınız. Sonra onu birkaç işleyiciyle birlikte nesne
+deposuna koyarsınız. Ve son olarak, nesne işleyicileri yapınızı atarsınız.
 
-In order to do so you have to override the ``create_object`` class handler. Here is a dummy example of how this looks
-like (with inline explanations)::
+Bunu yapmak için `create_object` sınıf işleyicisini geçersiz kılmanız gerekir. İşte bunun nasıl göründüğünü gösteren
+basit bir örnek (satır içi açıklamalarla)::
 
     zend_class_entry *test_ce;
 
-    /* We need a (true global) variable to store the object handlers that will be used for our
-     * objects. The object handlers are initialized in MINIT. */
+    /* Nesnelerimiz için kullanılacak nesne işleyicileri depolamak için (gerçek bir global) değişkene ihtiyacımız var.
+     * Nesne işleyicileri MINIT'te başlatıldı. */
     static zend_object_handlers test_object_handlers;
 
-    /* Our custom object structure. It has to contain a `zend_object` value (not a pointer!) as first
-     * member, followed by whatever additional properties one may want. */
+    /* Özel nesne yapımız. İlk üye olarak bir `zend_object` değeri (bir işaretçi değil!) içermesi gerekir, 
+     * ardından istediği ilave özellikleri takip edin. */
     typedef struct _test_object {
         zend_object std;
         long additional_property;
     } test_object;
 
-    /* This is the handler that will be called when the object is freed. This handler has to destruct
-     * the std object (this will free the properties hashtable etc) and also free the object structure
-     * itself. (And if there are any other resources that were allocated, those obviously have to be
-     * freed here, too.) */
+    /* Bu, nesne serbest bırakıldığında çağrılacak olan işleyicidir.
+     * Bu işleyici std nesnesini imha etmelidir (bu özellik özellikleri vb. Serbest bırakacaktır)
+     * ve ayrıca nesne yapısını kendisi serbest bırakmalıdır.
+     * (Ve tahsis edilen başka kaynaklar varsa, bunların da burada serbest bırakılması gerekir.) */
     static void test_free_object_storage_handler(test_object *intern TSRMLS_DC)
     {
         zend_object_std_dtor(&intern->std TSRMLS_CC);
         efree(intern);
     }
 
-    /* This is the handler used for creating objects. It takes the class entry (it will also be used
-     * for classes that extend this one, that's why the class entry has to be passed in) and returns
-     * an object value (which is a handle to the object store and a pointer to the object handlers
-     * structure). */
+    /* Bu nesne oluşturmak için kullanılan işleyicidir. Sınıf girişini alır (bunu genişleten sınıflar
+     * için de kullanılır, bu nedenle sınıf girişinin iletilmesi gerekir) ve bir nesne değeri (nesne 
+     * deposuna bir tutamaç ve nesne işleyicisine bir işaretçi yapısı döndürür). */
     zend_object_value test_create_object_handler(zend_class_entry *class_type TSRMLS_DC)
     {
         zend_object_value retval;
 
-        /* Allocate and zero-out the internal object structure. By convention the variable holding
-         * the internal structure is usually called `intern`. */
+        /* Dahili nesne yapısını atayın ve sıfırlayın. Kural olarak, iç yapıyı tutan değişken genellikle 
+         * `intern` olarak adlandırılır. */
         test_object *intern = emalloc(sizeof(test_object));
         memset(intern, 0, sizeof(test_object));
 
-        /* The underlying std zend_object has to be initialized.  */
+        /* Temel std zend_object başlatılması gerekiyor.  */
         zend_object_std_init(&intern->std, class_type TSRMLS_CC);
 
-        /* Even if you don't use properties yourself you should still call object_properties_init(),
-         * because extending classes may use properties. (Generally a lot of the stuff you will do is
-         * for the sake of not breaking extending classes). */
+        /* Özellikleri kendiniz kullanmasanız bile, object_properties_init () öğesini
+         * çağırmalısınız, çünkü extending sınıfları özellikleri kullanabilir. (Genelde
+         * yapacağınız işlerin çoğu, genişleyen sınıfları kırmamak adınadır). */
         object_properties_init(&intern->std, class_type);
 
-        /* Put the internal object into the object store, with the default dtor handler and our custom
-         * free handler. The last NULL parameter is the clone handler, which is left empty for now. */
+        /* Dahili nesneyi, varsayılan dtor işleyicisi ve özel serbest işleyicimiz ile,
+         * nesne deposuna yerleştirin. Son NULL parametresi şimdilik boş bırakılan klon 
+         * işleyicisidir. */
         retval.handle = zend_objects_store_put(
             intern,
             (zend_objects_store_dtor_t) zend_objects_destroy_object,
@@ -208,36 +208,36 @@ like (with inline explanations)::
             NULL TSRMLS_CC
         );
 
-        /* Assign the customized object handlers */
+        /* Özelleştirilmiş nesne işleyicileri atama */
         retval.handlers = &test_object_handlers;
 
         return retval;
     }
 
-    /* No methods for now */
+    /* Şimdilik fonksiyon yok */
     const zend_function_entry test_functions[] = {
         PHP_FE_END
     };
 
     PHP_MINIT_FUNCTION(test2)
     {
-        /* The usual class registration... */
+        /* Her zamanki sınıf kaydı... */
         zend_class_entry tmp_ce;
         INIT_CLASS_ENTRY(tmp_ce, "Test", test_functions);
         test_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);
 
-        /* Assign the object creation handler in the class entry */
+        /* Sınıf girişine nesne oluşturma işleyicisini atayın */
         test_ce->create_object = test_create_object_handler;
 
-        /* Initialize the custom object handlers to the default object handlers. Afterwards you
-         * normally override individual handlers, but for now let's leave them at the defaults. */
+        /* Özel nesne işleyicileri varsayılan nesne işleyicileri için ilklendir. Daha sonra 
+         * normal olarak bireysel işleyicileri geçersiz kılarsınız, ancak şimdilik bunları 
+         * varsayılanlara bırakalım. */
         memcpy(&test_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 
         return SUCCESS;
     }
 
-The above code isn't particularly useful yet, but it demonstrates the basic structure of pretty much all internal PHP
-classes.
+Yukarıdaki kod henüz pek kullanışlı değil, ancak hemen hemen tüm iç PHP sınıflarının temel yapısını gösterir.
 
 Object store handlers
 ---------------------
