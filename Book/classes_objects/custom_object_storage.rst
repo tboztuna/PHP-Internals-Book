@@ -360,24 +360,24 @@ aynı sınıf girişine sahip yeni bir nesne oluşturur (``zend_objects_new`` ku
     /* ... */
     test_object_handler.clone_obj = test_clone_handler;
 
-Interacting with the object store
----------------------------------
+Nesne deposuyla etkileşime girme
+--------------------------------
 
-In the above code samples you have already seen several functions for interacting with the object store. The first one
-was ``zend_objects_store_put``, which is used for inserting objects into the store. Also three functions for getting
-objects back from the store were mentioned:
+Yukarıdaki kod örneklerinde, nesne deposuyla etkileşimde bulunmak için çeşitli işlevler gördünüz. İlki, nesneleri
+depoya eklemek için kullanılan ``zend_objects_store_put`` idi. Ayrıca, nesneleri depodan geri almak için üç
+fonksiyondan bahsedilmiştir:
 
-``zend_object_store_get_object_by_handle()``, as the name already says, gets an object from the store given its handle.
-This function is used when you have an object handle, but don't have the associated zval (like in the clone handler).
-In most other cases on the other hand you'll use the ``zend_object_store_get_object()`` function which accepts a zval
-and will extract the handle from it.
+``zend_object_store_get_object_by_handle()``, adından da anlaşılacağı gibi, tanıtıcısı verilen depodan bir nesne alır.
+Bu işlev bir nesne işleyiciniz olduğunda, ancak ilişkili zval'a sahip olmadığınızda kullanılır (klon işleyicisindeki
+gibi). Öte yandan çoğu durumda, bir zval kabul eden ve ondan kolu çıkaracak olan ``zend_object_store_get_object()``
+işlevini kullanacaksınız.
 
-The third getter function that was used is ``zend_objects_get_address()``, which does the exact same thing as
-``zend_object_store_get_object()``, but returns the result as a ``zend_object*`` rather than a ``void*``. As such this
-function is pretty useless because C allows implicit casts from ``void*`` to other pointer types.
+Kullanılan üçüncü getter işlevi, ``zend_objects_get_address()``, yani ``zend_objectstore_get_object()`` ile aynı şeyi
+yapar, ancak sonucu bir ``void*`` yerine ``zend_object*`` olarak döndürür. Bu işlev oldukça işe yaramaz gibi çünkü C
+``void*```dan diğer işaretçi türlerine gizli atamalar sağlar.
 
-The most important of these functions is ``zend_object_store_get_object()``. You will be using it a lot. Pretty much
-all methods will look similar to this::
+Bu işlevlerin en önemlisi ``zend_object_store_get_object()``'dir. Çok kullanıyor olacaksınız. Hemen hemen tüm yöntemler
+buna benzeyecek ::
 
     PHP_METHOD(Test, foo)
     {
@@ -391,9 +391,9 @@ all methods will look similar to this::
         object = getThis();
         intern = zend_object_store_get_object(object TSRMLS_CC);
 
-        /* Do some stuff here, like returning an internal property: */
+        /* Burada bir şeyler yapın, dahili mülk iadesi gibi: */
         RETURN_LONG(intern->additional_property);
     }
 
-There are some more functions provided by the object store, e.g. for managing the object refcount, but those are rarely
-used directly, so they aren't covered here.
+Nesne deposu tarafından sağlanan başka fonksiyonlar da vardır; nesne refcountını yönetmek için, ancak bunlar nadiren
+doğrudan kullanılır, bu yüzden burada ele alınmadı.
