@@ -239,50 +239,51 @@ basit bir örnek (satır içi açıklamalarla)::
 
 Yukarıdaki kod henüz pek kullanışlı değil, ancak hemen hemen tüm iç PHP sınıflarının temel yapısını gösterir.
 
-Object store handlers
----------------------
+Nesne deposu işleyicileri
+-------------------------
 
-As already mentioned there are three object storage handlers: One for destruction, one for freeing and one for cloning.
+Daha önce de belirtildiği gibi, üç nesne depolama işleyicisi vardır: Biri imha etmek, biri serbest bırakmak, diğeri
+klonlamak için.
 
-What is a bit confusing at first is that there is both a dtor handler and a free handler, which sounds like they do
-about the same thing. The reason is that PHP has a two-phase object destruction system, where first the destructor is
-called and then the object is freed. Both phases can happen separately from each other.
+İlk başta kafa karıştırıcı olan şey, hem bir dtor işleyicisinin hem de aynı şey hakkında yaptıkları gibi görünen
+ücretsiz bir işleyicinin olmasıdır. Bunun nedeni, PHP'nin, önce yıkıcı olarak adlandırılan ve sonra nesnenin serbest
+bırakıldığı iki aşamalı bir nesne imha sistemine sahip olmasıdır. Her iki faz birbirinden ayrı olabilir.
 
-In particular this happens with all objects which are still alive when the script ends. For them PHP will first call all
-dtor handlers (right after calling any registered shutdown functions), but will only free the objects at a later point
-in time, as part of the executor shutdown. This separation of destruction and freeing is necessary to ensure that no
-destructors are run during the shutdown sequence, otherwise you could get into situations where userland code is
-executed in a half-shutdown environment. Without this separation any ``zval_ptr_dtor`` call during shutdown could blow
-up.
+Özellikle bu, komut dosyası sona erdiğinde hala yaşayan nesneler de olur. Onlar için PHP ilk önce tüm dtor
+işleyicilerini çağıracak (herhangi bir kayıtlı kapatma işlevini çağırdıktan hemen sonra), ancak yalnızca uygulayıcı
+kapanmasının bir parçası olarak nesneleri daha sonra boşaltacaktır. Bu yıkım ve boşaltma ayrımı, kapatma sırasındaki
+yıkıcıların çalıştırılmadığından emin olmak için gereklidir, aksi takdirde kullanıcı kodu bir yarı kapanma ortamında
+çalıştırılır. Bu ayrılma olmadan, kapatma sırasında herhangi bir ``zval_ptr_dtor`` çağrısı patlayabilir.
 
-Another peculiarity of dtor handlers is that they *aren't* necessarily called. E.g. if a destructor calls ``die`` the
-remaining destructors are skipped.
+Dtor işleyicilerinin başka bir özelliği de mutlaka çağrılmaya gerek *olmamasıdır*. Örneğin. Bir yıkıcı ``öl`` diyorsa,
+kalan yıkıcılar atlanır.
 
-So basically the difference between the two handlers is that dtor can run userland code, but isn't necessarily called,
-free on the other hand is always called, but mustn't execute any PHP code. That's why in most cases you will only
-specify a custom free handler and use ``zend_objects_destroy_object`` as the dtor handler, which provides the default
-behavior of calling ``__destruct`` (if it exists). Once again, even if you don't use ``__destruct`` yourself you should
-still specify this handler, otherwise inheriting classes won't be able to use it either.
+Bu nedenle, temel olarak iki işleyici arasındaki fark, dtor'un kullanıcı kodu çalıştırabilmesi, ancak mutlaka
+çağrılmaya gerek olmaması, diğer taraftan özgür olarak çağrılması, ancak her zaman PHP kodları çalıştırmamaları
+gerektiğidir. Bu nedenle çoğu durumda yalnızca özel bir serbest işleyici belirtir ve dtor işleyicisi olarak
+``zend_objects_destroy_object`` işlevini kullanırsınız (varsa), varsayılan davranışını sağlar. Bir kez daha,
+``__destruct`` kullanmasanız bile, bu işleyiciyi yine de belirtmelisiniz, aksi halde miras sınıfları da
+kullanamaz.
 
-Now only the clone handler is left. Here the semantics should be straightforward, but the use is a bit more tricky.
-This is how such a clone handler might look like::
+Şimdi sadece klon işleyicisi kaldı. Burada semantik basit olmalı, ancak kullanımı biraz daha zor.
+Bir klon işleyicisinin böyle görünür::
 
     static void test_clone_object_storage_handler(
         test_object *object, test_object **object_clone_target TSRMLS_DC
     ) {
-        /* Create a new object */
+        /* Yeni bir obje oluştur */
         test_object *object_clone = emalloc(sizeof(test_object));
         zend_object_std_init(&object_clone->std, object->std.ce TSRMLS_CC);
         object_properties_init(&object_clone->std, object->std.ce);
 
-        /* Do any additional cloning stuff here */
+        /* Burada herhangi bir ek klonlama işlemi yap */
         object_clone->additional_property = object->additional_property;
 
-        /* Return the cloned object */
+        /* Klonlanan objeyi geri döndür */
         *object_clone_target = object_clone;
     }
 
-The clone handler is then passed as the last argument to ``zend_objects_store_put``::
+Klon işleyicisi daha sonra ``zend_objects_store_put``'a son argüman olarak iletilir::
 
     retval.handle = zend_objects_store_put(
         intern,
@@ -292,18 +293,18 @@ The clone handler is then passed as the last argument to ``zend_objects_store_pu
         TSRMLS_CC
     );
 
-But this is not yet enough to make the clone handler work: By default the object storage clone handler is simply
-ignored. To make it work you have to replace the default clone handler in the object handlers structure with
-``zend_objects_store_clone_obj``::
+Ancak bu klonlama işleyicisinin çalışmasını sağlamak için henüz yeterli değildir: Varsayılan olarak, nesne depolama
+klonlama işleyicisi basitçe yoksayılır. Çalışması için, nesne işleyicileri yapısındaki varsayılan klonlama işleyicisini
+``zend_objects_store_clone_obj`` ::
 
     memcpy(&test_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     test_object_handler.clone_obj = zend_objects_store_clone_obj;
 
-But overwriting the standard clone handler (``zend_objects_clone_obj``) comes with its own set of problems: Now
-properties (as in real properties, not the ones in the custom object storage) won't be copied and also the ``__clone``
-method won't be called. That's why most internal classes instead directly specify their own object handler for cloning,
-rather than going the extra round through the object storage clone handler. This approach comes with a bit more
-boilerplate. For example, this is how the default clone handler looks like::
+Ancak standart klonlama işleyicisinin (``zend_objects_clone_obj``) üzerine yazması kendi sorunlarıyla birlikte gelir:
+Şimdi özellikler (gerçek özelliklerde olduğu gibi, özel nesne deposundakiler değil) kopyalanmayacak ve aynı zamanda
+``__clone`` yöntemi çağrılmayacak. Bu nedenle çoğu iç sınıf, nesne saklama klonu işleyicisi üzerinden fazladan tur
+yapmak yerine doğrudan klonlama için kendi nesne işleyicisini belirler. Bu yaklaşım biraz daha fazla kazanç ile
+birlikte geliyor. Örneğin, varsayılan klonlama işleyicisi şöyle görünür::
 
     ZEND_API zend_object_value zend_objects_clone_obj(zval *zobject TSRMLS_DC)
     {
@@ -312,8 +313,8 @@ boilerplate. For example, this is how the default clone handler looks like::
         zend_object *new_object;
         zend_object_handle handle = Z_OBJ_HANDLE_P(zobject);
 
-        /* assume that create isn't overwritten, so when clone depends on the
-         * overwritten one then it must itself be overwritten */
+        /* yaratmanın üzerine yazılmadığını varsayalım, yani klon üzerine yazılana
+         * bağlı olduğunda, o zaman kendi üzerine yazılmalıdır. */
         old_object = zend_objects_get_address(zobject TSRMLS_CC);
         new_obj_val = zend_objects_new(&new_object, old_object->ce TSRMLS_CC);
 
@@ -321,37 +322,36 @@ boilerplate. For example, this is how the default clone handler looks like::
 
         return new_obj_val;
     }
+Bu işlev ilk önce ``zend_object*`` yapısını ``zend_objects_get_address`` kullanarak nesne deposundan alır, ardından
+aynı sınıf girişine sahip yeni bir nesne oluşturur (``zend_objects_new`` kullanarak) ve sonra
+``zend_objects_clone_members`` işlevini çağırır. Bu da (adından da anlaşılacağı gibi) özellikleri klonlar, ancak varsa
+``__clone`` yöntemini de çağırır.
 
-This function first fetches the ``zend_object*`` structure from the object store using ``zend_objects_get_address``,
-then creates a new object with the same class entry (using ``zend_objects_new``) and then calls
-``zend_objects_clone_members``, which will (as the name says) clone the properties, but will also call the ``__clone``
-method if it exists.
-
-A custom object cloning handler looks similar, with the main difference being that instead of calling
-``zend_objects_new`` we'll rather call our ``create_object`` handler::
+Özel bir nesne klonlama işleyicisi benzer görünüyor; temel fark, ``zend_objects_new`` çağırmak yerine,
+``create_object`` işleyicimizi çağırmaktır::
 
     static zend_object_value test_clone_handler(zval *object TSRMLS_DC)
     {
-        /* Get the internal structure of the old object */
+        /* Eski nesnenin iç yapısını al */
         test_object *old_object = zend_object_store_get_object(object TSRMLS_CC);
 
-        /* Create a new object with the same class entry. This will only give us back the
-         * zend_object_value, but not the actual internal structure of the new object. */
+        /* Aynı sınıf girişiyle yeni bir nesne oluşturun. Bu bize sadece zend_object_value değerini
+         * geri verecek, ancak yeni nesnenin gerçek iç yapısını geri vermeyecektir. */
         zend_object_value new_object_val = test_create_object_handler(Z_OBJCE_P(object) TSRMLS_CC);
 
-        /* To get the internal structure we need to fetch it from the object store using the
-         * handle we got from the create_object handler. */
+        /* İç yapıyı elde etmek için, create_object işleyicisinden aldığımız 
+         * işleyiciyi kullanarak onu nesne deposundan almamız gerekir. */
         test_object *new_object = zend_object_store_get_object_by_handle(
             new_object_val.handle TSRMLS_CC
         );
 
-        /* Clone properties and call __clone */
+        /* Özellikleri kopyala ve __clone'u çağır */
         zend_objects_clone_members(
             &new_object->std, new_object_val,
             &old_object->std, Z_OBJ_HANDLE_P(object) TSRMLS_CC
         );
 
-        /* Here comes the actual custom cloning code */
+        /* İşte gerçek özel klonlama kodu geliyor */
         new_object->additional_property = old_object->additional_property;
 
         return new_object_val;
