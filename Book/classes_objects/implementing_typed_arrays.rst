@@ -1,53 +1,52 @@
 Tipli dizilerin (typed arrays) implementasyonu
 ==============================================
 
-The previous two sections have been talking about the class system rather abstractly. In this section on the other hand
-I'd like to guide you through the implementation of a "real" class: A typed array. I use this as an example for two
-reasons: Firstly, typed arrays are something where it really makes sense to implement them internally. They are rather
-hard to implement in userland PHP and an internal implementation can use both less memory and be a lot faster. Secondly,
-typed arrays are good to show off some of PHP's object and class handlers. For example they need offset access, element
-counting, iteration, serialization and debug information.
+Önceki iki bölüm, sınıf sistemi hakkında oldukça soyut bir şekilde bahsetmekteydi. Öte yandan, bu bölümde size "gerçek"
+bir sınıfın uygulanmasında yol göstermek istiyorum: Tipli bir dizi. Bunu iki nedenden dolayı örnek olarak
+kullanıyorum: Birincisi, yazılan diziler onları içsel olarak uygulamanın gerçekten anlamlı olduğu bir şey olması.
+Kullanıcı PHP'sinde uygulama yapmak zordur ve dahili bir uygulama hem daha az bellek kullanır hem de çok daha hızlı
+olabilir. İkincisi, yazılan diziler PHP'nin bazı nesne ve sınıf işleyicilerini göstermek için iyidir. Örneğin ofset
+erişimi, element sayımı, yineleme, serileştirme ve hata ayıklama bilgilerine ihtiyaçları vardır.
 
-Array buffers and views
------------------------
+Dizi arabellekleri ve görünümleri
+---------------------------------
 
-What we'll implement in this section is a reduced version of JavaScript's ArrayBuffer system. An ``ArrayBuffer`` is just
-a chunk of memory with a fixed size. The ``ArrayBuffer`` by itself cannot be read or written to, it is just an object
-representing the memory.
+Bu bölümde uygulayacağımız şey, JavaScript'in ArrayBuffer sisteminin sade bir sürümüdür. ``ArrayBuffer``, sabit boyutlu
+bir bellek parçasıdır. ``ArrayBuffer`` kendiliğinden okunamaz veya yazılamaz, yalnızca belleği temsil eden bir
+nesnedir.
 
-In order to read from or write to the buffer you have to create a view on it. E.g. to interpret the buffer as an array
-of signed 32-bit integers you create a ``Int32Array`` view. To view it as an array of unsigned 8-bit numbers instead you
-can use a ``UInt8Array``. It is possible to have several views on the same data, so data can be interpreted both as an
-int32 and a uint8.
+Tampondan okumak veya yazmak için üzerinde bir görünüm oluşturmanız gerekir. Örneğin: Tamponu işaretli bir 32-bit
+tamsayı dizisi olarak yorumlamak için bir ``Int32Array`` görünümü yaratırsınız. Bunu işaretsiz 8 bitlik sayılar dizisi
+olarak görüntülemek için bir ``UInt8Array`` kullanabilirsiniz. Aynı veriler üzerinde birkaç görüşe sahip olmak
+mümkündür, bu nedenle veriler hem int32 hem de uint8 olarak yorumlanabilir.
 
-A small usage example:
+Küçük bir kullanım örneği:
 
 .. code-block:: php
 
-    // allocate a buffer containing 256 bytes
+    // 256 bayt içeren bir tampon ayır
     $buffer = new ArrayBuffer(256);
 
-    // create an int32 view on the buffer with 256 / 8 = 32 elements
+    // arabellekle bir int32 görünümü oluştur 256 / 8 = 32 element
     $int32 = new Int32Array($buffer);
 
-    // create a uint8 view on the same buffer with 256 / 1 = 256 elements
+    // aynı arabellekte bir uint8 görünümü oluştur 256 / 1 = 256 element
     $uint8 = new UInt8Array($buffer);
 
-    // fill the uint8 view with values from 0 to 255
+    // uint8 görünümünü 0 ile 255 arasındaki değerlerle doldurun
     for ($i = 0; $i < 256; ++$i) {
         $uint8[$i] = $i;
     }
 
-    // now read the filled buffer interpreting it as signed 32-bit integers
+    // şimdi işaretli 32-bit tamsayılar olarak dolu tamponu okuyun
     for ($i = 0; $i < 32; ++$i) {
         echo $int32[$i], "\n";
     }
 
-This kind of buffer + view system is handy for many purposes, so it'll be the system that will be implemented here. To
-not make this overly long we won't implement the whole JS API, only the most important parts of it. Furthermore I won't
-spend much time considering details of the implementations like overflow behavior and endianness. Those are very
-important considerations for a "real" implementation, but for our purposes it's not really relevant, so I'll just stick
-with the behaviors that you get "by default" (i.e. with least code).
+Bu tür bir tampon + görüntüleme sistemi birçok amaç için kullanışlıdır, bu nedenle burada uygulanacak olan sistem bu
+olacaktır. Bu aşırı uzun sürmemesi için JS API'nin tamamını, sadece en önemli kısımlarını uygulamalıyız. Ayrıca taşma
+davranışı ve kuşkusuzluk gibi uygulamaların ayrıntılarını göz önünde bulundurarak fazla zaman harcamayacağım. Bunlar
+"gerçek" bir uygulama için çok önemli hususlar, ancak bizim amaçlarımız için gerçekten önemli değil, bu yüzden sadece "varsayılan olarak" (yani en az kod içeren) aldığınız davranışlara sadık kalacağım.
 
 The ``ArrayBuffer``
 -------------------
